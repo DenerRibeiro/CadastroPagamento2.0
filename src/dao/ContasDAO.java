@@ -21,12 +21,15 @@ public class ContasDAO {
     }
     //método que adiciona os valores na tabela tb_boleto
     public void Adiciona(Contas contas){
-        String sqlB = "INSERT INTO tb_boleto(boleto_valor,boleto_data_vencimento) VALUES(?,?)";
+        String sqlB = "INSERT INTO tb_boleto(boleto_valor,boleto_data_vencimento,"
+                + "boleto_data_pagamento,boleto_descricao) VALUES(?,?,?,?)";
         try{
             PreparedStatement stmt = this.connection.prepareStatement(sqlB);
             
             stmt.setString(1, contas.getBoletoValor());
             stmt.setString(2, contas.getBoletoDataVencimento());  
+            stmt.setString(3, contas.getBoletoDataPagamento());
+            stmt.setString(4, contas.getBoletoDescricao());
             stmt.execute();            
             stmt.close();
             

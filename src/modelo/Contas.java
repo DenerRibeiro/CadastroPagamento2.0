@@ -9,6 +9,9 @@ public class Contas {
     private int boletoCod;
     private String boletoValor;
     private String boletoDataVencimento;
+    private String boletoDataPagamento;
+    private String boletoDescricao;
+    
     private String acrecimoMulta;
     private String acrecimoJuros;
     private String acrecimoNovoValor;
@@ -18,6 +21,14 @@ public class Contas {
         return boletoCod;
     }
 
+    public String getBoletoDataPagamento() {
+        return boletoDataPagamento;
+    }
+
+    public void setBoletoDataPagamento(String boletoDataPagamento) {
+        this.boletoDataPagamento = boletoDataPagamento;
+    }
+    
     public void setBoletoCod(int boletoCod) {
         this.boletoCod = boletoCod;
     }
@@ -60,6 +71,20 @@ public class Contas {
 
     public void setAcrecimoNovoValor(String acrecimoNovoValor) {
         this.acrecimoNovoValor = acrecimoNovoValor;
+    }
+
+    /**
+     * @return the boletoDescricao
+     */
+    public String getBoletoDescricao() {
+        return boletoDescricao;
+    }
+
+    /**
+     * @param boletoDescricao the boletoDescricao to set
+     */
+    public void setBoletoDescricao(String boletoDescricao) {
+        this.boletoDescricao = boletoDescricao;
     }
     
     
