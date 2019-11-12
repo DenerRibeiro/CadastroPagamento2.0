@@ -2,14 +2,18 @@ package gui;
 
 import static com.sun.org.apache.xalan.internal.lib.ExsltDatetime.date;
 import dao.ContasDAO;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.security.auth.callback.ConfirmationCallback;
+import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTable;
@@ -23,13 +27,16 @@ public class ContasGUI extends javax.swing.JFrame {
     /**
      * Creates new form ContasGUI
      */
+    
+    public JFileChooser jfc;
     public ContasGUI() {
         initComponents();
         setResizable(false);
         setLocationRelativeTo(null);
         jTData.setDate(new Date(System.currentTimeMillis()));
-        jDateChooser1.setDate(new Date(System.currentTimeMillis()));
-        jDateChooser2.setDate(new Date(System.currentTimeMillis()));
+        jTData1.setDate(new Date(System.currentTimeMillis()));
+        jDateInicio.setDate(new Date(System.currentTimeMillis()));
+        jDateFim.setDate(new Date(System.currentTimeMillis()));
         jTFJuros.setEnabled(false);
         jTFMulta.setEnabled(false);
     }
@@ -50,10 +57,12 @@ public class ContasGUI extends javax.swing.JFrame {
         jPanel2 = new javax.swing.JPanel();
         jButton3 = new javax.swing.JButton();
         jLabel13 = new javax.swing.JLabel();
-        jButton4 = new javax.swing.JButton();
-        jDateChooser1 = new com.toedter.calendar.JDateChooser();
-        jDateChooser2 = new com.toedter.calendar.JDateChooser();
+        jDateInicio = new com.toedter.calendar.JDateChooser();
+        jDateFim = new com.toedter.calendar.JDateChooser();
         jLabel14 = new javax.swing.JLabel();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        jTable = new javax.swing.JTable();
+        jButton2 = new javax.swing.JButton();
         jPanel1 = new javax.swing.JPanel();
         jButton1 = new javax.swing.JButton();
         jLabel3 = new javax.swing.JLabel();
@@ -65,8 +74,8 @@ public class ContasGUI extends javax.swing.JFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         jTextArea1 = new javax.swing.JTextArea();
         jLabel5 = new javax.swing.JLabel();
-        jCheckBox1 = new javax.swing.JCheckBox();
-        jCheckBox2 = new javax.swing.JCheckBox();
+        jCheckBoxMulta = new javax.swing.JCheckBox();
+        jCheckBoxJuros = new javax.swing.JCheckBox();
         jTFJuros = new javax.swing.JTextField();
         jTFMulta = new javax.swing.JTextField();
         jSeparator1 = new javax.swing.JSeparator();
@@ -85,54 +94,93 @@ public class ContasGUI extends javax.swing.JFrame {
         });
 
         jLabel13.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-        jLabel13.setText("Período");
-
-        jButton4.setText("FECHAR");
-        jButton4.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton4ActionPerformed(evt);
-            }
-        });
+        jLabel13.setText("Vencimento");
 
         jLabel14.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         jLabel14.setText("até");
+
+        jTable.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "Valor", "Pagamento", "Vencimento", "Juros", "Multa", "Novo Valor"
+            }
+        ) {
+            Class[] types = new Class [] {
+                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
+            };
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false, false
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        jScrollPane2.setViewportView(jTable);
+        if (jTable.getColumnModel().getColumnCount() > 0) {
+            jTable.getColumnModel().getColumn(0).setResizable(false);
+            jTable.getColumnModel().getColumn(1).setResizable(false);
+            jTable.getColumnModel().getColumn(2).setResizable(false);
+            jTable.getColumnModel().getColumn(3).setResizable(false);
+            jTable.getColumnModel().getColumn(4).setResizable(false);
+            jTable.getColumnModel().getColumn(5).setResizable(false);
+        }
+
+        jButton2.setText("PDF");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
             .addGroup(jPanel2Layout.createSequentialGroup()
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap()
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
                         .addComponent(jLabel13)
                         .addGap(18, 18, 18)
-                        .addComponent(jDateChooser1, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jDateInicio, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
                         .addComponent(jLabel14)
+                        .addGap(18, 18, 18)
+                        .addComponent(jDateFim, javax.swing.GroupLayout.PREFERRED_SIZE, 179, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                        .addGap(373, 373, 373)
+                        .addComponent(jButton2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jDateChooser2, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(jButton4)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jButton3))
+                        .addComponent(jButton3)))
+                .addContainerGap())
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jDateChooser1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jDateInicio, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel13)
-                    .addComponent(jDateChooser2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jDateFim, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel14))
-                .addGap(189, 189, 189)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 242, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButton3)
-                    .addComponent(jButton4))
+                    .addComponent(jButton2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
+
+        jPanel2Layout.linkSize(javax.swing.SwingConstants.VERTICAL, new java.awt.Component[] {jDateFim, jDateInicio});
 
         jTabbedPane2.addTab("CONSULTA", jPanel2);
 
@@ -161,22 +209,21 @@ public class ContasGUI extends javax.swing.JFrame {
             }
         });
         jScrollPane1.setViewportView(jTextArea1);
-        jTextArea1.getAccessibleContext().setAccessibleParent(null);
 
         jLabel5.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         jLabel5.setText("Descrição:");
 
-        jCheckBox1.setText("Multa (%)");
-        jCheckBox1.addActionListener(new java.awt.event.ActionListener() {
+        jCheckBoxMulta.setText("Multa (%)");
+        jCheckBoxMulta.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jCheckBox1ActionPerformed(evt);
+                jCheckBoxMultaActionPerformed(evt);
             }
         });
 
-        jCheckBox2.setText("Juros ao dia (%)");
-        jCheckBox2.addActionListener(new java.awt.event.ActionListener() {
+        jCheckBoxJuros.setText("Juros ao dia (%)");
+        jCheckBoxJuros.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jCheckBox2ActionPerformed(evt);
+                jCheckBoxJurosActionPerformed(evt);
             }
         });
 
@@ -201,8 +248,8 @@ public class ContasGUI extends javax.swing.JFrame {
                     .addComponent(jLabel3, javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(jLabel2, javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addComponent(jCheckBox1)
-                        .addComponent(jCheckBox2))
+                        .addComponent(jCheckBoxMulta)
+                        .addComponent(jCheckBoxJuros))
                     .addComponent(jLabel5, javax.swing.GroupLayout.Alignment.TRAILING))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
@@ -236,11 +283,11 @@ public class ContasGUI extends javax.swing.JFrame {
                 .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jCheckBox2)
+                    .addComponent(jCheckBoxJuros)
                     .addComponent(jTFJuros, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jCheckBox1)
+                    .addComponent(jCheckBoxMulta)
                     .addComponent(jTFMulta, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -257,9 +304,7 @@ public class ContasGUI extends javax.swing.JFrame {
         jDesktopPane1.setLayout(jDesktopPane1Layout);
         jDesktopPane1Layout.setHorizontalGroup(
             jDesktopPane1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jDesktopPane1Layout.createSequentialGroup()
-                .addComponent(jTabbedPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 488, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
+            .addComponent(jTabbedPane2)
         );
         jDesktopPane1Layout.setVerticalGroup(
             jDesktopPane1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -289,18 +334,15 @@ public class ContasGUI extends javax.swing.JFrame {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
 
-        String datav = jDateChooser1.getDateFormatString();
+        String datav = jTData1.getDateFormatString();
 //        System.out.println(datav);
-        if ((jTValor.getText().isEmpty()) || datav.equals("MMM d, yyyy")) { // teste se os campos estão vazios
+        if ((jTValor.getText().isEmpty())) { // teste se os campos estão vazios
             JOptionPane.showMessageDialog(null, "Os campos * não podem estar vazios!");
         } else {
-            Date data1 = new Date();
-            Date data2 = new Date();
-            data1 = jTData.getDate();
-            data2 = jTData1.getDate();
             SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-            String vencimento = sdf.format(data1);
-            String pagamento = sdf.format(data2);
+
+            String vencimento = sdf.format(jTData1.getDate());
+            String pagamento = sdf.format(jTData.getDate());
 
             ContasDAO dao = new ContasDAO();
             Contas contas = new Contas();
@@ -321,8 +363,8 @@ public class ContasGUI extends javax.swing.JFrame {
                     Date dataPagamento = null;
                     Date dataVencimento = null;
 
-                    dataPagamento = format.parse(vencimento);
-                    dataVencimento = format.parse(pagamento);
+                    dataPagamento = format.parse(pagamento);
+                    dataVencimento = format.parse(vencimento);
 
                     long diff = dataPagamento.getTime() - dataVencimento.getTime();
                     long diffDays = diff / (24 * 60 * 60 * 1000);
@@ -333,27 +375,28 @@ public class ContasGUI extends javax.swing.JFrame {
                     double juros = 0;
                     double multa = 0;
 
-                    if (jCheckBox2.isSelected()) {
-                        juros = Double.parseDouble(jTFJuros.getText());//juros
+                    if (jCheckBoxJuros.isSelected()) {
+                        juros = Double.parseDouble(jTFJuros.getText()) / 100;//juros
                         juros = Math.round(juros * 100) / 100d;
                     }
-                    if (jCheckBox1.isSelected()) {
-                        multa = Double.parseDouble(jTFMulta.getText());//calculo da multa
+                    if (jCheckBoxMulta.isSelected()) {
+                        multa = Double.parseDouble(jTFMulta.getText()) / 100;//calculo da multa
                         multa = Math.round(multa * 100) / 100d;
 
                     }
+                    System.out.println(dataPagamento.compareTo(dataVencimento));
+                    if (dataPagamento.compareTo(dataVencimento) > 0 && (jCheckBoxMulta.isSelected()
+                            || jCheckBoxJuros.isSelected())) {//teste se boleto atrasado
 
-                    if (diff > 0 && (jCheckBox1.isSelected()
-                            || jCheckBox2.isSelected())) {//teste se boleto atrasado
-                        JOptionPane.showMessageDialog(this, "O Boleto está " + difDias + " dias Atrasado! ");
+//                        JOptionPane.showConfirmDialog(null, "O Boleto está " + difDias + " dias Atrasado! ");
                         double valorB = Double.parseDouble(jTValor.getText());
                         valorB = Math.round(valorB * 100) / 100d;
 
-                        if (jCheckBox2.isSelected()) {
+                        if (jCheckBoxJuros.isSelected()) {
                             juros = valorB * juros;//juros
                             juros = Math.round(juros * 100) / 100d;
                         }
-                        if (jCheckBox1.isSelected()) {
+                        if (jCheckBoxMulta.isSelected()) {
                             multa = valorB * multa;//calculo da multa
                             multa = Math.round(multa * 100) / 100d;
 
@@ -366,17 +409,28 @@ public class ContasGUI extends javax.swing.JFrame {
                         contas.setAcrecimoMulta(Double.toString(multa));
                         contas.setAcrecimoNovoValor(Double.toString(valorB));
 
-                        JOptionPane.showMessageDialog(this, "Pagamento com R$" + Double.toString(juros) + " de juros, e R$" + Double.toString(multa) + " de multa.\n Resultando em um Valor Total de R$" + valorB);
+                        JOptionPane.showMessageDialog(this, difDias + " dias de atraso: R$"
+                                + Double.toString(juros) + " de juros, e R$" + Double.toString(multa)
+                                + " de multa.\n Valor resultante: R$" + valorB);
                     }
-                    dao.Adiciona(contas);
-                    dao.AdicionaAcrecimo(contas);
+                    int input = JOptionPane.showConfirmDialog(null,
+                            "Tem certeza que deseja cadastrar ?", "",
+                            JOptionPane.OK_CANCEL_OPTION, JOptionPane.INFORMATION_MESSAGE);
+                    if (input == 0) {
+                        dao.Adiciona(contas);
+                        dao.AdicionaAcrecimo(contas);
 
-                    JOptionPane.showMessageDialog(this, "Pagamento Cadastrado com Sucesso!");
+                        JOptionPane.showMessageDialog(this, "Pagamento Cadastrado com Sucesso!");
 
-                    jTData.setDate(new Date(System.currentTimeMillis()));
-                    jTValor.setText("");
-                    jTFMulta.setText("");
-                    jTFJuros.setText("");
+                        jTData.setDate(new Date(System.currentTimeMillis()));
+                        jTValor.setText("");
+                        jTFMulta.setText("");
+                        jTFJuros.setText("");
+                        jCheckBoxJuros.setSelected(false);
+                        jCheckBoxMulta.setSelected(false);
+                        jTextArea1.setText("");
+                    }
+//                    JOptionPane.show
 
                 } catch (ParseException ex) {
 //                    JOptionPane.showMessageDialog(this, "Juros e Multa devem ser números");
@@ -397,12 +451,46 @@ public class ContasGUI extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_jButton1ActionPerformed
 
-    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
-        // TODO add your handling code here:
-        System.exit(0);//sair do sistema
-    }//GEN-LAST:event_jButton4ActionPerformed
-
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+        Date inicio = new Date();
+        Date fim = new Date();
+        inicio = jDateInicio.getDate();
+        fim = jDateFim.getDate();
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+        String dataInicio = sdf.format(inicio);
+        String dataFim = sdf.format(fim);
+
+        ContasDAO cd = new ContasDAO();
+        DefaultTableModel model = (DefaultTableModel) jTable.getModel();
+//        model.addRow();
+
+//        model.setNumRows(1);
+        model.setNumRows(0);
+        String data = null;
+        Date dData = null;
+        try {
+            ResultSet rs = cd.Consulta();
+            while (rs.next()) {
+                Vector linhas = new Vector();
+                data = rs.getString("boleto_data_vencimento");
+                dData = sdf.parse(data);
+                if (dData.compareTo(sdf.parse(dataInicio)) >= 0 && dData.compareTo(sdf.parse(dataFim)) <= 0) {
+                    linhas.add(rs.getString("boleto_valor"));
+                    linhas.add(rs.getString("boleto_data_pagamento"));
+                    linhas.add(rs.getString("boleto_data_vencimento"));
+                    linhas.add(rs.getString("acrecimo_juros"));
+                    linhas.add(rs.getString("acrecimo_multa"));
+                    linhas.add(rs.getString("acrecimo_novo_valor"));
+
+                    model.addRow(linhas);
+                }
+            }
+
+        } catch (SQLException ex) {
+            Logger.getLogger(ContasGUI.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ParseException ex) {
+            Logger.getLogger(ContasGUI.class.getName()).log(Level.SEVERE, null, ex);
+        }
 
 
     }//GEN-LAST:event_jButton3ActionPerformed
@@ -415,29 +503,37 @@ public class ContasGUI extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_jTextArea1KeyTyped
 
-    private void jCheckBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBox1ActionPerformed
+    private void jCheckBoxMultaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBoxMultaActionPerformed
         // TODO add your handling code here:
-        if (!jCheckBox1.isSelected()) {
+        if (!jCheckBoxMulta.isSelected()) {
             jTFMulta.setEnabled(false);
         } else {
             jTFMulta.setEnabled(true);
         }
 
-    }//GEN-LAST:event_jCheckBox1ActionPerformed
+    }//GEN-LAST:event_jCheckBoxMultaActionPerformed
 
     private void jTFMultaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTFMultaActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jTFMultaActionPerformed
 
-    private void jCheckBox2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBox2ActionPerformed
+    private void jCheckBoxJurosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBoxJurosActionPerformed
         // TODO add your handling code here
-        if (!jCheckBox2.isSelected()) {
+        if (!jCheckBoxJuros.isSelected()) {
             jTFJuros.setEnabled(false);
         } else {
             jTFJuros.setEnabled(true);
         }
 
-    }//GEN-LAST:event_jCheckBox2ActionPerformed
+    }//GEN-LAST:event_jCheckBoxJurosActionPerformed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        // TODO add your handling code here:
+        jfc = new JFileChooser();
+        jfc.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+
+
+    }//GEN-LAST:event_jButton2ActionPerformed
     //método para verificar se a data está no padrão dd/mm/yyyy
 
     public boolean dataOK(String data) {
@@ -510,13 +606,13 @@ public class ContasGUI extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
-    private javax.swing.JButton jButton4;
-    private javax.swing.JCheckBox jCheckBox1;
-    private javax.swing.JCheckBox jCheckBox2;
+    private javax.swing.JCheckBox jCheckBoxJuros;
+    private javax.swing.JCheckBox jCheckBoxMulta;
     private javax.swing.JComboBox jComboBox1;
-    private com.toedter.calendar.JDateChooser jDateChooser1;
-    private com.toedter.calendar.JDateChooser jDateChooser2;
+    private com.toedter.calendar.JDateChooser jDateFim;
+    private com.toedter.calendar.JDateChooser jDateInicio;
     private javax.swing.JDesktopPane jDesktopPane1;
     private javax.swing.JLabel jLabel13;
     private javax.swing.JLabel jLabel14;
@@ -528,6 +624,7 @@ public class ContasGUI extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JSeparator jSeparator1;
     private com.toedter.calendar.JDateChooser jTData;
     private com.toedter.calendar.JDateChooser jTData1;
@@ -535,6 +632,7 @@ public class ContasGUI extends javax.swing.JFrame {
     private javax.swing.JTextField jTFMulta;
     private javax.swing.JTextField jTValor;
     private javax.swing.JTabbedPane jTabbedPane2;
+    private javax.swing.JTable jTable;
     private javax.swing.JTextArea jTextArea1;
     // End of variables declaration//GEN-END:variables
 }
