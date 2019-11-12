@@ -21,13 +21,12 @@ public class ContasDAO {
     }
     //método que adiciona os valores na tabela tb_boleto
     public void Adiciona(Contas contas){
-        String sqlB = "INSERT INTO tb_boleto(boleto_cod,boleto_valor,boleto_data_vencimento) VALUES(?,?,?)";
+        String sqlB = "INSERT INTO tb_boleto(boleto_valor,boleto_data_vencimento) VALUES(?,?)";
         try{
             PreparedStatement stmt = this.connection.prepareStatement(sqlB);
             
-            stmt.setInt(1, contas.getBoletoCod());
-            stmt.setString(2, contas.getBoletoValor());
-            stmt.setString(3, contas.getBoletoDataVencimento());  
+            stmt.setString(1, contas.getBoletoValor());
+            stmt.setString(2, contas.getBoletoDataVencimento());  
             stmt.execute();            
             stmt.close();
             
@@ -40,14 +39,13 @@ public class ContasDAO {
     }
     //método que adiciona os valores na tabela tb_acrecimo
      public void AdicionaAcrecimo(Contas contas){
-        String sqlA = "INSERT INTO tb_acrecimo(acrecimo_multa,acrecimo_juros,acrecimo_novo_valor,fk_boleto_cod) VALUES(?,?,?,?)";
+        String sqlA = "INSERT INTO tb_acrecimo(acrecimo_multa,acrecimo_juros,acrecimo_novo_valor) VALUES(?,?,?)";
         try{
             PreparedStatement stmtA = this.connection.prepareStatement(sqlA);
             
             stmtA.setString(1, contas.getAcrecimoJuros());
             stmtA.setString(2, contas.getAcrecimoMulta());
             stmtA.setString(3, contas.getAcrecimoNovoValor());
-            stmtA.setInt(4, contas.getBoletoCod());
             stmtA.execute();
             stmtA.close();
         }catch(SQLException u){

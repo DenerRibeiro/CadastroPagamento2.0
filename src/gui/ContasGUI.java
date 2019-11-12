@@ -1,4 +1,3 @@
-
 package gui;
 
 import static com.sun.org.apache.xalan.internal.lib.ExsltDatetime.date;
@@ -53,8 +52,6 @@ public class ContasGUI extends javax.swing.JFrame {
         jPanel1 = new javax.swing.JPanel();
         jButton1 = new javax.swing.JButton();
         jLabel3 = new javax.swing.JLabel();
-        jTCodBoleto = new javax.swing.JTextField();
-        jLabel1 = new javax.swing.JLabel();
         jTValor = new javax.swing.JTextField();
         jLabel2 = new javax.swing.JLabel();
         jButton2 = new javax.swing.JButton();
@@ -141,9 +138,6 @@ public class ContasGUI extends javax.swing.JFrame {
         jLabel3.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         jLabel3.setText("Valor do Boleto:");
 
-        jLabel1.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-        jLabel1.setText("Código do Boleto:");
-
         jLabel2.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         jLabel2.setText("Data de Vencimento:");
 
@@ -162,25 +156,25 @@ public class ContasGUI extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addGap(0, 4, Short.MAX_VALUE)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addComponent(jLabel3)
-                                    .addComponent(jLabel1))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                 .addComponent(jButton2)
                                 .addGap(419, 419, 419))
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                                 .addComponent(jButton1)
                                 .addGap(203, 203, 203))))
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jLabel2)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jTValor, javax.swing.GroupLayout.DEFAULT_SIZE, 223, Short.MAX_VALUE)
-                            .addComponent(jTCodBoleto, javax.swing.GroupLayout.DEFAULT_SIZE, 223, Short.MAX_VALUE)
-                            .addComponent(jTData, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                                .addComponent(jLabel3)
+                                .addGap(282, 282, 282))
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(jLabel2)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(jTValor)
+                                    .addComponent(jTData, javax.swing.GroupLayout.PREFERRED_SIZE, 223, javax.swing.GroupLayout.PREFERRED_SIZE))))
                         .addGap(0, 0, Short.MAX_VALUE))))
         );
         jPanel1Layout.setVerticalGroup(
@@ -188,17 +182,13 @@ public class ContasGUI extends javax.swing.JFrame {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel1)
-                    .addComponent(jTCodBoleto, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel3)
                     .addComponent(jTValor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jTData, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel2))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 79, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 134, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButton1)
                     .addComponent(jButton2))
@@ -213,7 +203,7 @@ public class ContasGUI extends javax.swing.JFrame {
             jDesktopPane1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jDesktopPane1Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jTabbedPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 506, Short.MAX_VALUE)
+                .addComponent(jTabbedPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 506, Short.MAX_VALUE)
                 .addContainerGap())
         );
         jDesktopPane1Layout.setVerticalGroup(
@@ -248,96 +238,84 @@ public class ContasGUI extends javax.swing.JFrame {
         Date data = new Date();
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
         String novaData = sdf.format(data);
-        
-        
-        
-        if ((jTCodBoleto.getText().isEmpty()) || (jTValor.getText().isEmpty())) { // teste se os campos estão vazios
+
+        if ((jTValor.getText().isEmpty())) { // teste se os campos estão vazios
             JOptionPane.showMessageDialog(null, "Os campos não podem estar vazios!");
         } else {
             ContasDAO dao = new ContasDAO();
             Contas contas = new Contas();
             try {
-                if (dao.Consulta(jTCodBoleto.getText())) { //teste se pagamento já está cadastrado
-                    JOptionPane.showMessageDialog(null, "Pagamento Já Cadastrado!");
-                    jTData.setDate(new Date(System.currentTimeMillis()));
-                    jTCodBoleto.setText("");
-                    jTValor.setText("");
-                } else {
-                    double boletoCodD = Double.parseDouble(jTCodBoleto.getText());
-                    try {
-                        double BoletoValorD = Double.parseDouble(jTValor.getText());
-                        contas.setBoletoCod(Integer.parseInt(jTCodBoleto.getText()));
-                        double d = Double.parseDouble(jTValor.getText());
-                        d = Math.round(d * 100) / 100d;
-                        contas.setBoletoValor(Double.toString(d));
-                        contas.setBoletoDataVencimento(novaData);
-                        dao.Adiciona(contas);
+//                double boletoCodD = Double.parseDouble(jTCodBoleto.getText());
+                try {
+                    double BoletoValorD = Double.parseDouble(jTValor.getText());
+//                    contas.setBoletoCod(Integer.parseInt(jTCodBoleto.getText()));
+                    double d = Double.parseDouble(jTValor.getText());
+                    d = Math.round(d * 100) / 100d;
+                    contas.setBoletoValor(Double.toString(d));
+                    contas.setBoletoDataVencimento(novaData);
+                    dao.Adiciona(contas);
 
-                        if (dataOK(novaData)) {//teste se a data está dentro do padrão dd/MM/yyy
-                            try {//calculo da diferença de dias
-                                DateFormat timeFormatado = new SimpleDateFormat("dd/MM/yyyy");
-                                Date time = new Date();
+                    if (dataOK(novaData)) {//teste se a data está dentro do padrão dd/MM/yyy
+                        try {//calculo da diferença de dias
+                            DateFormat timeFormatado = new SimpleDateFormat("dd/MM/yyyy");
+                            Date time = new Date();
 
-                                String dateStart = novaData;
-                                String dateStop = (timeFormatado.format(time));
-                                SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
+                            String dateStart = novaData;
+                            String dateStop = (timeFormatado.format(time));
+                            SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
 
-                                Date d1 = null;
-                                Date d2 = null;
+                            Date d1 = null;
+                            Date d2 = null;
 
-                                d1 = format.parse(dateStart);
-                                d2 = format.parse(dateStop);
+                            d1 = format.parse(dateStart);
+                            d2 = format.parse(dateStop);
 
-                                long diff = d2.getTime() - d1.getTime();
-                                long diffDays = diff / (24 * 60 * 60 * 1000);
+                            long diff = d2.getTime() - d1.getTime();
+                            long diffDays = diff / (24 * 60 * 60 * 1000);
 
-                                String difDiasS = String.valueOf(diffDays);
-                                int difDias = Integer.parseInt(difDiasS);
+                            String difDiasS = String.valueOf(diffDays);
+                            int difDias = Integer.parseInt(difDiasS);
 
-                                if (d2.getTime() > d1.getTime()) {//teste se boleto atrasado
-                                    JOptionPane.showMessageDialog(this, "O Boleto está " + difDias + " dias Atrasado! ");
-                                    double valorB = Double.parseDouble(jTValor.getText());
-                                    valorB = Math.round(valorB * 100) / 100d;
+                            if (d2.getTime() > d1.getTime()) {//teste se boleto atrasado
+                                JOptionPane.showMessageDialog(this, "O Boleto está " + difDias + " dias Atrasado! ");
+                                double valorB = Double.parseDouble(jTValor.getText());
+                                valorB = Math.round(valorB * 100) / 100d;
 
-                                    double juros = valorB * (difDias * 0.06);//juros
-                                    juros = Math.round(juros * 100) / 100d;
-                                    double multa = valorB * 0.02;//calculo da multa
-                                    multa = Math.round(multa * 100) / 100d;
+                                double juros = valorB * (difDias * 0.06);//juros
+                                juros = Math.round(juros * 100) / 100d;
+                                double multa = valorB * 0.02;//calculo da multa
+                                multa = Math.round(multa * 100) / 100d;
 
-                                    valorB += multa + juros;//calculo do novo valor   
-                                    contas.setAcrecimoJuros(Double.toString(juros));
-                                    contas.setAcrecimoMulta(Double.toString(multa));
-                                    contas.setAcrecimoNovoValor(Double.toString(valorB));
+                                valorB += multa + juros;//calculo do novo valor   
+                                contas.setAcrecimoJuros(Double.toString(juros));
+                                contas.setAcrecimoMulta(Double.toString(multa));
+                                contas.setAcrecimoNovoValor(Double.toString(valorB));
 
-                                    dao.AdicionaAcrecimo(contas);
-                                    JOptionPane.showMessageDialog(this, "Pagamento Cadastrado com R$" + Double.toString(juros) + " de juros, e R$" + Double.toString(multa) + " de multa.\n Resultando em um Valor Total de R$" + valorB);
-                                }
-
-                            } catch (Exception e) {
-                                JOptionPane.showMessageDialog(this, "Insira a Data no padrão 11/11/1111");
-                                e.printStackTrace();
+                                dao.AdicionaAcrecimo(contas);
+                                JOptionPane.showMessageDialog(this, "Pagamento Cadastrado com R$" + Double.toString(juros) + " de juros, e R$" + Double.toString(multa) + " de multa.\n Resultando em um Valor Total de R$" + valorB);
                             }
 
-                            JOptionPane.showMessageDialog(this, "Pagamento Cadastrado com Sucesso!");
-
-                            jTData.setDate(new Date(System.currentTimeMillis()));
-                            jTCodBoleto.setText("");
-                            jTValor.setText("");
-
+                        } catch (Exception e) {
+                            JOptionPane.showMessageDialog(this, "Insira a Data no padrão 11/11/1111");
+                            e.printStackTrace();
                         }
 
-                    } catch (NumberFormatException u) {
-                        JOptionPane.showMessageDialog(null, "Insira apenas Números Inteiros no Valor do Boleto!");
+                        JOptionPane.showMessageDialog(this, "Pagamento Cadastrado com Sucesso!");
+
+                        jTData.setDate(new Date(System.currentTimeMillis()));
                         jTValor.setText("");
+
                     }
 
+                } catch (NumberFormatException u) {
+                    JOptionPane.showMessageDialog(null, "Insira apenas Números Inteiros no Valor do Boleto!");
+                    jTValor.setText("");
                 }
-            } catch (NumberFormatException e) {
-                JOptionPane.showMessageDialog(null, "Insira apenas Números Inteiros no Código do boleto!");
-                jTCodBoleto.setText("");
 
-            } catch (SQLException ex) {
-                Logger.getLogger(ContasGUI.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (NumberFormatException e) {
+//                JOptionPane.showMessageDialog(null, "Insira apenas Números Inteiros no Código do boleto!");
+//                jTCodBoleto.setText("");
+
             }
         }
     }//GEN-LAST:event_jButton1ActionPerformed
@@ -453,7 +431,6 @@ public class ContasGUI extends javax.swing.JFrame {
     private javax.swing.JButton jButton4;
     private javax.swing.JComboBox jComboBox1;
     private javax.swing.JDesktopPane jDesktopPane1;
-    private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel13;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -461,7 +438,6 @@ public class ContasGUI extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
-    private javax.swing.JTextField jTCodBoleto;
     private javax.swing.JTextField jTConsultar;
     private com.toedter.calendar.JDateChooser jTData;
     private javax.swing.JTextField jTValor;
