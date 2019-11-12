@@ -28,6 +28,8 @@ public class ContasGUI extends javax.swing.JFrame {
         setResizable(false);
         setLocationRelativeTo(null);
         jTData.setDate(new Date(System.currentTimeMillis()));
+        jDateChooser1.setDate(new Date(System.currentTimeMillis()));
+        jDateChooser2.setDate(new Date(System.currentTimeMillis()));
     }
 
     /**
@@ -44,11 +46,12 @@ public class ContasGUI extends javax.swing.JFrame {
         jDesktopPane1 = new javax.swing.JDesktopPane();
         jTabbedPane2 = new javax.swing.JTabbedPane();
         jPanel2 = new javax.swing.JPanel();
-        jTConsultar = new javax.swing.JTextField();
         jButton3 = new javax.swing.JButton();
         jLabel13 = new javax.swing.JLabel();
         jButton4 = new javax.swing.JButton();
-        jPanel3 = new javax.swing.JPanel();
+        jDateChooser1 = new com.toedter.calendar.JDateChooser();
+        jDateChooser2 = new com.toedter.calendar.JDateChooser();
+        jLabel14 = new javax.swing.JLabel();
         jPanel1 = new javax.swing.JPanel();
         jButton1 = new javax.swing.JButton();
         jLabel3 = new javax.swing.JLabel();
@@ -71,7 +74,7 @@ public class ContasGUI extends javax.swing.JFrame {
         });
 
         jLabel13.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-        jLabel13.setText("Código do Boleto:");
+        jLabel13.setText("Período");
 
         jButton4.setText("FECHAR");
         jButton4.addActionListener(new java.awt.event.ActionListener() {
@@ -80,46 +83,40 @@ public class ContasGUI extends javax.swing.JFrame {
             }
         });
 
-        javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
-        jPanel3.setLayout(jPanel3Layout);
-        jPanel3Layout.setHorizontalGroup(
-            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
-        );
-        jPanel3Layout.setVerticalGroup(
-            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 177, Short.MAX_VALUE)
-        );
+        jLabel14.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        jLabel14.setText("até");
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
             .addGroup(jPanel2Layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                    .addComponent(jPanel3, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addComponent(jButton4)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jButton3))
-                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(jLabel13)
+                        .addGap(18, 18, 18)
+                        .addComponent(jDateChooser1, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jTConsultar, javax.swing.GroupLayout.PREFERRED_SIZE, 223, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(58, 58, 58)))
-                .addContainerGap(30, Short.MAX_VALUE))
+                        .addComponent(jLabel14)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jDateChooser2, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(jButton4)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jButton3))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jDateChooser1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel13)
-                    .addComponent(jTConsultar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                    .addComponent(jDateChooser2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel14))
+                .addGap(189, 189, 189)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButton3)
                     .addComponent(jButton4))
@@ -156,7 +153,7 @@ public class ContasGUI extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                        .addGap(0, 4, Short.MAX_VALUE)
+                        .addGap(0, 56, Short.MAX_VALUE)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                                 .addComponent(jButton2)
@@ -203,7 +200,7 @@ public class ContasGUI extends javax.swing.JFrame {
             jDesktopPane1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jDesktopPane1Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jTabbedPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 506, Short.MAX_VALUE)
+                .addComponent(jTabbedPane2)
                 .addContainerGap())
         );
         jDesktopPane1Layout.setVerticalGroup(
@@ -236,6 +233,7 @@ public class ContasGUI extends javax.swing.JFrame {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         Date data = new Date();
+        data = jTData.getDate();
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
         String novaData = sdf.format(data);
 
@@ -255,57 +253,57 @@ public class ContasGUI extends javax.swing.JFrame {
                     contas.setBoletoDataVencimento(novaData);
                     dao.Adiciona(contas);
 
-                    if (dataOK(novaData)) {//teste se a data está dentro do padrão dd/MM/yyy
-                        try {//calculo da diferença de dias
-                            DateFormat timeFormatado = new SimpleDateFormat("dd/MM/yyyy");
-                            Date time = new Date();
+                    try {//calculo da diferença de dias
+                        DateFormat timeFormatado = new SimpleDateFormat("dd/MM/yyyy");
+                        Date time = new Date();
 
-                            String dateStart = novaData;
-                            String dateStop = (timeFormatado.format(time));
-                            SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
+                        String dateStart = novaData;
+                        String dateStop = (timeFormatado.format(time));
+                        SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
 
-                            Date d1 = null;
-                            Date d2 = null;
+                        Date d1 = null;
+                        Date d2 = null;
 
-                            d1 = format.parse(dateStart);
-                            d2 = format.parse(dateStop);
+                        d1 = format.parse(dateStart);
+                        d2 = format.parse(dateStop);
 
-                            long diff = d2.getTime() - d1.getTime();
-                            long diffDays = diff / (24 * 60 * 60 * 1000);
+                        long diff = d2.getTime() - d1.getTime();
+                        long diffDays = diff / (24 * 60 * 60 * 1000);
 
-                            String difDiasS = String.valueOf(diffDays);
-                            int difDias = Integer.parseInt(difDiasS);
+                        String difDiasS = String.valueOf(diffDays);
+                        int difDias = Integer.parseInt(difDiasS);
 
-                            if (d2.getTime() > d1.getTime()) {//teste se boleto atrasado
-                                JOptionPane.showMessageDialog(this, "O Boleto está " + difDias + " dias Atrasado! ");
-                                double valorB = Double.parseDouble(jTValor.getText());
-                                valorB = Math.round(valorB * 100) / 100d;
+                        if (d2.getTime() > d1.getTime()) {//teste se boleto atrasado
+                            System.out.println("ok");
 
-                                double juros = valorB * (difDias * 0.06);//juros
-                                juros = Math.round(juros * 100) / 100d;
-                                double multa = valorB * 0.02;//calculo da multa
-                                multa = Math.round(multa * 100) / 100d;
+                            JOptionPane.showMessageDialog(this, "O Boleto está " + difDias + " dias Atrasado! ");
+                            double valorB = Double.parseDouble(jTValor.getText());
+                            valorB = Math.round(valorB * 100) / 100d;
 
-                                valorB += multa + juros;//calculo do novo valor   
-                                contas.setAcrecimoJuros(Double.toString(juros));
-                                contas.setAcrecimoMulta(Double.toString(multa));
-                                contas.setAcrecimoNovoValor(Double.toString(valorB));
+                            double juros = valorB * (difDias * 0.06);//juros
+                            juros = Math.round(juros * 100) / 100d;
+                            double multa = valorB * 0.02;//calculo da multa
+                            multa = Math.round(multa * 100) / 100d;
 
-                                dao.AdicionaAcrecimo(contas);
-                                JOptionPane.showMessageDialog(this, "Pagamento Cadastrado com R$" + Double.toString(juros) + " de juros, e R$" + Double.toString(multa) + " de multa.\n Resultando em um Valor Total de R$" + valorB);
-                            }
+                            valorB += multa + juros;//calculo do novo valor 
+                            valorB = Math.round(valorB * 100) / 100d;
+                            contas.setAcrecimoJuros(Double.toString(juros));
+                            contas.setAcrecimoMulta(Double.toString(multa));
+                            contas.setAcrecimoNovoValor(Double.toString(valorB));
 
-                        } catch (Exception e) {
-                            JOptionPane.showMessageDialog(this, "Insira a Data no padrão 11/11/1111");
-                            e.printStackTrace();
+                            dao.AdicionaAcrecimo(contas);
+                            JOptionPane.showMessageDialog(this, "Pagamento Cadastrado com R$" + Double.toString(juros) + " de juros, e R$" + Double.toString(multa) + " de multa.\n Resultando em um Valor Total de R$" + valorB);
                         }
 
-                        JOptionPane.showMessageDialog(this, "Pagamento Cadastrado com Sucesso!");
-
-                        jTData.setDate(new Date(System.currentTimeMillis()));
-                        jTValor.setText("");
-
+                    } catch (Exception e) {
+                        JOptionPane.showMessageDialog(this, "Insira a Data no padrão 11/11/1111");
+                        e.printStackTrace();
                     }
+
+                    JOptionPane.showMessageDialog(this, "Pagamento Cadastrado com Sucesso!");
+
+                    jTData.setDate(new Date(System.currentTimeMillis()));
+                    jTValor.setText("");
 
                 } catch (NumberFormatException u) {
                     JOptionPane.showMessageDialog(null, "Insira apenas Números Inteiros no Valor do Boleto!");
@@ -327,32 +325,7 @@ public class ContasGUI extends javax.swing.JFrame {
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
 
-        if ((jTConsultar.getText().isEmpty())) {//teste se campo está fazio
-            JOptionPane.showMessageDialog(null, "O campo não pode estar vazio!");
-        } else {
-            try {
-                int consuI = Integer.parseInt(jTConsultar.getText());//teste se o campo de consulta está tudo em inteiro
 
-                ContasDAO dao = new ContasDAO();
-
-                try {
-                    if (dao.Consulta(jTConsultar.getText())) {//teste se cadastrado
-                        JOptionPane.showMessageDialog(null, "Pagamento Já Cadastrado!");
-                        jTConsultar.setText("");
-                    } else {
-                        JOptionPane.showMessageDialog(null, "Pagamento ainda Não Cadastrado!");
-                        jTConsultar.setText("");
-                    }
-
-                } catch (SQLException ex) {
-                    System.out.println(ex);
-                    Logger.getLogger(ContasGUI.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            } catch (NumberFormatException e) {
-                JOptionPane.showMessageDialog(null, "Use Apenas Números Inteiros!");
-                jTConsultar.setText("");
-            }
-        }
     }//GEN-LAST:event_jButton3ActionPerformed
     //método para verificar se a data está no padrão dd/mm/yyyy
 
@@ -430,15 +403,16 @@ public class ContasGUI extends javax.swing.JFrame {
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
     private javax.swing.JComboBox jComboBox1;
+    private com.toedter.calendar.JDateChooser jDateChooser1;
+    private com.toedter.calendar.JDateChooser jDateChooser2;
     private javax.swing.JDesktopPane jDesktopPane1;
     private javax.swing.JLabel jLabel13;
+    private javax.swing.JLabel jLabel14;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
-    private javax.swing.JPanel jPanel3;
-    private javax.swing.JTextField jTConsultar;
     private com.toedter.calendar.JDateChooser jTData;
     private javax.swing.JTextField jTValor;
     private javax.swing.JTabbedPane jTabbedPane2;

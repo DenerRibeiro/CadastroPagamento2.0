@@ -39,13 +39,16 @@ public class ContasDAO {
     }
     //método que adiciona os valores na tabela tb_acrecimo
      public void AdicionaAcrecimo(Contas contas){
-        String sqlA = "INSERT INTO tb_acrecimo(acrecimo_multa,acrecimo_juros,acrecimo_novo_valor) VALUES(?,?,?)";
+        String sqlA = "INSERT INTO tb_acrecimo(acrecimo_multa,acrecimo_juros,"
+                + "acrecimo_novo_valor,fk_boleto_cod) VALUES(?,?,?,?)";
         try{
             PreparedStatement stmtA = this.connection.prepareStatement(sqlA);
             
             stmtA.setString(1, contas.getAcrecimoJuros());
             stmtA.setString(2, contas.getAcrecimoMulta());
             stmtA.setString(3, contas.getAcrecimoNovoValor());
+            stmtA.setInt(4, LastQuery());
+//            System.out.println();
             stmtA.execute();
             stmtA.close();
         }catch(SQLException u){
@@ -83,6 +86,40 @@ public class ContasDAO {
             JOptionPane.showMessageDialog(null, e );            
         }
         return find;
+               
+     }
+     public int LastQuery() throws SQLException{
+//        boolean valido = true;
+//         boolean find = true;
+         int res=-1;
+        try{
+            ResultSet rs;
+            Statement stmt;
+            
+            ConnectionFactory con = new ConnectionFactory();
+            stmt = con.getConnection().createStatement();
+
+            String sql = "select boleto_cod from tb_boleto";
+            PreparedStatement stmtC = this.connection.prepareStatement(sql);
+            
+            stmtC.execute();
+            
+            rs = stmtC.executeQuery();
+//            find = rs.first();
+            while(rs.next()){
+                res = rs.getInt("boleto_cod");
+            }            
+            stmt.close();
+            
+//            ContasGUI gui = new ContasGUI();
+            
+//            return find;
+            
+        }catch(SQLException e){
+            JOptionPane.showMessageDialog(null, e );            
+        }
+        return res;
+//        return find;
                
      }
 }
