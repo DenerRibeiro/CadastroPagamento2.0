@@ -1,34 +1,36 @@
 package gui;
 
-import static com.sun.org.apache.xalan.internal.lib.ExsltDatetime.date;
+//import com.itextpdf.io.font.woff2.Woff2Common.Table;
+//import com.itextpdf.kernel.pdf.PdfDocument;
+//import com.itextpdf.text.Document;
 import dao.ContasDAO;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
+import java.awt.Color;
+import java.awt.Component;
+import java.io.*;
+import java.sql.*;
+import java.text.*;
 import java.util.Date;
+import java.util.Formatter;
 import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.security.auth.callback.ConfirmationCallback;
 import javax.swing.JFileChooser;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
-import javax.swing.JPanel;
 import javax.swing.JTable;
+import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.table.JTableHeader;
-import javax.swing.table.TableColumn;
 import modelo.Contas;
+import sun.swing.table.DefaultTableCellHeaderRenderer;
 
 public class ContasGUI extends javax.swing.JFrame {
 
     /**
      * Creates new form ContasGUI
      */
-    
     public JFileChooser jfc;
+    
+
     public ContasGUI() {
         initComponents();
         setResizable(false);
@@ -39,6 +41,22 @@ public class ContasGUI extends javax.swing.JFrame {
         jDateFim.setDate(new Date(System.currentTimeMillis()));
         jTFJuros.setEnabled(false);
         jTFMulta.setEnabled(false);
+        
+        
+    }
+
+    public ContasGUI(Login l) {
+        initComponents();
+        setResizable(false);
+        setLocationRelativeTo(null);
+        jTData.setDate(new Date(System.currentTimeMillis()));
+        jTData1.setDate(new Date(System.currentTimeMillis()));
+        jDateInicio.setDate(new Date(System.currentTimeMillis()));
+        jDateFim.setDate(new Date(System.currentTimeMillis()));
+        jTFJuros.setEnabled(false);
+        jTFMulta.setEnabled(false);
+        l.setVisible(false);
+        l.setEnabled(false);
     }
 
     /**
@@ -94,7 +112,7 @@ public class ContasGUI extends javax.swing.JFrame {
         });
 
         jLabel13.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-        jLabel13.setText("Vencimento");
+        jLabel13.setText("Pagamento");
 
         jLabel14.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         jLabel14.setText("até");
@@ -132,7 +150,7 @@ public class ContasGUI extends javax.swing.JFrame {
             jTable.getColumnModel().getColumn(5).setResizable(false);
         }
 
-        jButton2.setText("PDF");
+        jButton2.setText("EXPORTAR TXT");
         jButton2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton2ActionPerformed(evt);
@@ -304,7 +322,10 @@ public class ContasGUI extends javax.swing.JFrame {
         jDesktopPane1.setLayout(jDesktopPane1Layout);
         jDesktopPane1Layout.setHorizontalGroup(
             jDesktopPane1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jTabbedPane2)
+            .addGroup(jDesktopPane1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jTabbedPane2)
+                .addContainerGap())
         );
         jDesktopPane1Layout.setVerticalGroup(
             jDesktopPane1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -468,11 +489,12 @@ public class ContasGUI extends javax.swing.JFrame {
         model.setNumRows(0);
         String data = null;
         Date dData = null;
+
         try {
             ResultSet rs = cd.Consulta();
             while (rs.next()) {
                 Vector linhas = new Vector();
-                data = rs.getString("boleto_data_vencimento");
+                data = rs.getString("boleto_data_pagamento");
                 dData = sdf.parse(data);
                 if (dData.compareTo(sdf.parse(dataInicio)) >= 0 && dData.compareTo(sdf.parse(dataFim)) <= 0) {
                     linhas.add(rs.getString("boleto_valor"));
@@ -492,6 +514,7 @@ public class ContasGUI extends javax.swing.JFrame {
             Logger.getLogger(ContasGUI.class.getName()).log(Level.SEVERE, null, ex);
         }
 
+        
 
     }//GEN-LAST:event_jButton3ActionPerformed
 
@@ -531,6 +554,42 @@ public class ContasGUI extends javax.swing.JFrame {
         // TODO add your handling code here:
         jfc = new JFileChooser();
         jfc.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+//        jfc.setCurrentDirectory(new java.io.File("."));
+
+        jfc.setAcceptAllFileFilterUsed(false);
+        jfc.showOpenDialog(this);
+        Date d = new Date();
+        SimpleDateFormat df = new SimpleDateFormat("dd-MM-yyyy-hh:mm:ss");
+        String dS = df.format(d);
+//        System.out.println(dS);
+
+        String path = jfc.getSelectedFile().getPath();
+        try {
+            Formatter f = new Formatter(path + "/" + dS + ".txt");
+//            f.format("Valor\t+Pagamento\t+Vencimento\t+Juros"
+//                    + "\t+Multa\t+NovoValor\n");
+
+            for (int i = 0; i < 6; i++) {
+                if (i != 5 && i != 0) {
+                    f.format(jTable.getColumnName(i) + "\t+  ");
+                } else if (i == 0) {
+                    f.format("+  " + jTable.getColumnName(i) + "\t+  ");
+                } else {
+                    f.format(jTable.getColumnName(i) + "\t");
+
+                }
+
+            }
+            f.format("\n");
+
+            f.format("|--------------|--------------|"
+                    + "--------------|--------------|"
+                    + "--------------|--------------\n");
+            f.close();
+
+        } catch (FileNotFoundException ex) {
+            Logger.getLogger(ContasGUI.class.getName()).log(Level.SEVERE, null, ex);
+        }
 
 
     }//GEN-LAST:event_jButton2ActionPerformed
@@ -568,6 +627,8 @@ public class ContasGUI extends javax.swing.JFrame {
     public void setString(String string) {
         this.string = string;
     }
+
+    
 
     /**
      * @param args the command line arguments
@@ -635,4 +696,8 @@ public class ContasGUI extends javax.swing.JFrame {
     private javax.swing.JTable jTable;
     private javax.swing.JTextArea jTextArea1;
     // End of variables declaration//GEN-END:variables
+
+    void main() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
 }

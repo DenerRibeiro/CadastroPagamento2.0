@@ -47,8 +47,8 @@ public class ContasDAO {
         try {
             PreparedStatement stmtA = this.connection.prepareStatement(sqlA);
 
-            stmtA.setString(1, contas.getAcrecimoJuros());
-            stmtA.setString(2, contas.getAcrecimoMulta());
+            stmtA.setString(1, contas.getAcrecimoMulta());
+            stmtA.setString(2, contas.getAcrecimoJuros());
             stmtA.setString(3, contas.getAcrecimoNovoValor());
             stmtA.setInt(4, LastQuery());
 //            System.out.println();
