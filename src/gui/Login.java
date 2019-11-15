@@ -5,7 +5,17 @@
  */
 package gui;
 
+import dao.ContasDAO;
+import java.awt.BorderLayout;
+import java.awt.GridLayout;
+import java.util.Arrays;
+import javax.swing.JComponent;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JPasswordField;
+import javax.swing.JTextField;
+import modelo.Contas;
 
 /**
  *
@@ -40,8 +50,11 @@ public class Login extends javax.swing.JFrame {
         jTUsuario = new javax.swing.JTextField();
         jPSenha = new javax.swing.JPasswordField();
         jBEntrar = new javax.swing.JButton();
-        jBDica = new javax.swing.JButton();
         jLDica = new javax.swing.JLabel();
+        jLabel3 = new javax.swing.JLabel();
+        jMenuBar1 = new javax.swing.JMenuBar();
+        jMenu2 = new javax.swing.JMenu();
+        jMenuItem1 = new javax.swing.JMenuItem();
 
         jScrollPane1.setViewportView(jTextPane1);
 
@@ -64,36 +77,47 @@ public class Login extends javax.swing.JFrame {
             }
         });
 
-        jBDica.setText("Dica");
-        jBDica.addActionListener(new java.awt.event.ActionListener() {
+        jLabel3.setText("Dica: admin admin");
+
+        jMenu2.setText("Usuário");
+
+        jMenuItem1.setText("Novo Usuário");
+        jMenuItem1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jBDicaActionPerformed(evt);
+                jMenuItem1ActionPerformed(evt);
             }
         });
+        jMenu2.add(jMenuItem1);
+
+        jMenuBar1.add(jMenu2);
+
+        setJMenuBar(jMenuBar1);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGap(104, 104, 104)
+            .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLDica)
                     .addGroup(layout.createSequentialGroup()
+                        .addGap(104, 104, 104)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                .addComponent(jLabel2)
-                                .addGap(18, 18, 18))
+                            .addComponent(jLDica)
                             .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabel1)
-                                .addGap(7, 7, 7)))
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jBDica, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jBEntrar, javax.swing.GroupLayout.PREFERRED_SIZE, 68, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addComponent(jPSenha, javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jTUsuario, javax.swing.GroupLayout.Alignment.LEADING))))
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                        .addComponent(jLabel2)
+                                        .addGap(18, 18, 18))
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(jLabel1)
+                                        .addGap(7, 7, 7)))
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                    .addComponent(jBEntrar, javax.swing.GroupLayout.PREFERRED_SIZE, 68, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jPSenha, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 132, Short.MAX_VALUE)
+                                    .addComponent(jTUsuario, javax.swing.GroupLayout.Alignment.LEADING)))))
+                    .addGroup(layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(jLabel3)))
                 .addContainerGap(141, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -108,12 +132,12 @@ public class Login extends javax.swing.JFrame {
                     .addComponent(jLabel2)
                     .addComponent(jPSenha, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jBEntrar)
-                    .addComponent(jBDica))
+                .addComponent(jBEntrar)
                 .addGap(18, 18, 18)
                 .addComponent(jLDica)
-                .addContainerGap(85, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 35, Short.MAX_VALUE)
+                .addComponent(jLabel3)
+                .addContainerGap())
         );
 
         pack();
@@ -123,29 +147,101 @@ public class Login extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_jTUsuarioActionPerformed
 
-    private void jBDicaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBDicaActionPerformed
-        // TODO add your handling code here:
-        jLDica.setText("Usuário: Gandalf | "
-                + "Senha: Diga 'amigo' e entre!");
-
-        jLDica.setVisible(true);
-    }//GEN-LAST:event_jBDicaActionPerformed
-
     private void jBEntrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBEntrarActionPerformed
         // TODO add your handling code here:
+        ContasDAO dao = new ContasDAO();
+
         String senha = new String(jPSenha.getPassword());
-        if (jTUsuario.getText().equals("Gandalf") && senha.equals("amigo")) {
-            ContasGUI g = new ContasGUI(this);
+        String usuario = jTUsuario.getText();
+
+        if (dao.VerificaUsuarioESenha(usuario, senha)) {
+            ContasGUI g = new ContasGUI(this, usuario);
             g.setVisible(true);
-        }else{
+        } else if (senha.equals("admin") && usuario.equals("admin")) {
+            if (!dao.VerificaUsuarioESenha("admin", "admin")) {
+                Contas contas = new Contas();
+                contas.setUsuario("admin");
+                contas.setSenha("admin");
+                dao.AdicionaUsuario(contas);
+            }
+            ContasGUI g = new ContasGUI(this, "admin");
+            g.setVisible(true);
+        } else {
             JOptionPane.showMessageDialog(null, "Usuário e/ou senha incorretos!");
             jTUsuario.setText("");
             jPSenha.setText("");
-        
+
         }
 
 
     }//GEN-LAST:event_jBEntrarActionPerformed
+
+    private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
+        // TODO add your handling code here:
+        ContasDAO dao = new ContasDAO();
+        Contas contas = new Contas();
+
+        JPanel panelAdmin = new JPanel();
+        JLabel jLsenhaAdmin = new JLabel("Senha: ");
+        JPasswordField jPsenhaAdmin = new JPasswordField(5);
+        panelAdmin.add(jLsenhaAdmin);
+        panelAdmin.add(jPsenhaAdmin);
+
+        int resAdmin = 0;
+
+        while (resAdmin == 0) {
+            resAdmin = JOptionPane.showConfirmDialog(null, panelAdmin,
+                "Senha do administrador", JOptionPane.OK_CANCEL_OPTION);
+            if(resAdmin!= 0)break;
+            if (jPsenhaAdmin.getText().equals("admin")) {
+                resAdmin =1;
+                JPanel panel = new JPanel();
+                panel.setLayout(new GridLayout(2, 1));
+                JLabel jLusuario = new JLabel("Usuario: ");
+                JTextField jTusuario = new JTextField(5);
+
+                JLabel jLsenha = new JLabel("Senha: ");
+                JPasswordField jPsenha = new JPasswordField(5);
+
+                panel.add(jLusuario);
+                panel.add(jTusuario);
+                panel.add(jLsenha);
+                panel.add(jPsenha);
+                boolean flag = true;
+                while (flag) {
+                    int resUsuario = JOptionPane.showConfirmDialog(null, panel,
+                            "Cadastrar Usuario", JOptionPane.OK_CANCEL_OPTION);
+
+                    if ((jTusuario.getText().isEmpty() || jPsenha.getText().isEmpty()) && resUsuario == 0) {
+                        JOptionPane.showMessageDialog(null, "Os campos não podem estar vazios");
+                    } else {
+                        contas.setUsuario(jTusuario.getText());
+                        contas.setSenha(jPsenha.getText());
+
+                        if (resUsuario == 0) {
+                            if (dao.VerificaUsuario(jTusuario.getText()) == false) {
+                                dao.AdicionaUsuario(contas);
+                                JOptionPane.showMessageDialog(null, "Usuário cadastrado com sucesso");
+                                flag = false;
+                            } else {
+                                JOptionPane.showMessageDialog(null, "Usuário já é cadastrado");
+                            }
+                            jTusuario.setText("");
+                            jPsenha.setText("");
+
+                        } else {
+                            flag = false;
+                        }
+                    }
+
+                }
+            }else{
+                JOptionPane.showMessageDialog(null, "senha inválida");
+            }
+        }
+
+
+    }//GEN-LAST:event_jMenuItem1ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -183,11 +279,14 @@ public class Login extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jBDica;
     private javax.swing.JButton jBEntrar;
     private javax.swing.JLabel jLDica;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JMenu jMenu2;
+    private javax.swing.JMenuBar jMenuBar1;
+    private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JPasswordField jPSenha;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTextField jTUsuario;

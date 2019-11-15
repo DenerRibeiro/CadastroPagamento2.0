@@ -16,6 +16,9 @@ public class Contas {
     private String acrecimoJuros;
     private String acrecimoNovoValor;
 
+    private String usuario;
+    private String senha;
+    
     //get e set para todas as variáveis
     public int getBoletoCod() {
         return boletoCod;
@@ -85,6 +88,34 @@ public class Contas {
      */
     public void setBoletoDescricao(String boletoDescricao) {
         this.boletoDescricao = boletoDescricao;
+    }
+
+    /**
+     * @return the usuario
+     */
+    public String getUsuario() {
+        return usuario;
+    }
+
+    /**
+     * @param usuario the usuario to set
+     */
+    public void setUsuario(String usuario) {
+        this.usuario = usuario;
+    }
+
+    /**
+     * @return the senha
+     */
+    public String getSenha() {
+        return senha;
+    }
+
+    /**
+     * @param senha the senha to set
+     */
+    public void setSenha(String senha) {
+        this.senha = senha;
     }
     
     

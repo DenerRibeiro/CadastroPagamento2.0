@@ -4,8 +4,7 @@ package gui;
 //import com.itextpdf.kernel.pdf.PdfDocument;
 //import com.itextpdf.text.Document;
 import dao.ContasDAO;
-import java.awt.Color;
-import java.awt.Component;
+import java.awt.GridLayout;
 import java.io.*;
 import java.sql.*;
 import java.text.*;
@@ -17,19 +16,19 @@ import java.util.logging.Logger;
 import javax.swing.JFileChooser;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
-import javax.swing.JTable;
-import javax.swing.table.DefaultTableCellRenderer;
+import javax.swing.JPanel;
+import javax.swing.JPasswordField;
+import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
 import modelo.Contas;
-import sun.swing.table.DefaultTableCellHeaderRenderer;
 
 public class ContasGUI extends javax.swing.JFrame {
 
     /**
      * Creates new form ContasGUI
      */
-    public JFileChooser jfc;
-    
+    private JFileChooser jfc;
+    private static String usuario;
 
     public ContasGUI() {
         initComponents();
@@ -41,11 +40,10 @@ public class ContasGUI extends javax.swing.JFrame {
         jDateFim.setDate(new Date(System.currentTimeMillis()));
         jTFJuros.setEnabled(false);
         jTFMulta.setEnabled(false);
-        
-        
+
     }
 
-    public ContasGUI(Login l) {
+    public ContasGUI(Login l, String usuario) {
         initComponents();
         setResizable(false);
         setLocationRelativeTo(null);
@@ -57,6 +55,9 @@ public class ContasGUI extends javax.swing.JFrame {
         jTFMulta.setEnabled(false);
         l.setVisible(false);
         l.setEnabled(false);
+
+        this.usuario = usuario;
+        jMenuItemNomeUsuario.setText(usuario);
     }
 
     /**
@@ -70,6 +71,16 @@ public class ContasGUI extends javax.swing.JFrame {
 
         jLabel9 = new javax.swing.JLabel();
         jComboBox1 = new javax.swing.JComboBox();
+        jCheckBoxMenuItem1 = new javax.swing.JCheckBoxMenuItem();
+        jCheckBoxMenuItem2 = new javax.swing.JCheckBoxMenuItem();
+        jMenuItem1 = new javax.swing.JMenuItem();
+        jMenuItem2 = new javax.swing.JMenuItem();
+        jMenuItem3 = new javax.swing.JMenuItem();
+        jMenuItem5 = new javax.swing.JMenuItem();
+        jPopupMenu1 = new javax.swing.JPopupMenu();
+        jPopupMenu2 = new javax.swing.JPopupMenu();
+        jPopupMenu3 = new javax.swing.JPopupMenu();
+        jMenuItem6 = new javax.swing.JMenuItem();
         jDesktopPane1 = new javax.swing.JDesktopPane();
         jTabbedPane2 = new javax.swing.JTabbedPane();
         jPanel2 = new javax.swing.JPanel();
@@ -96,11 +107,31 @@ public class ContasGUI extends javax.swing.JFrame {
         jCheckBoxJuros = new javax.swing.JCheckBox();
         jTFJuros = new javax.swing.JTextField();
         jTFMulta = new javax.swing.JTextField();
-        jSeparator1 = new javax.swing.JSeparator();
+        jMenuBar1 = new javax.swing.JMenuBar();
+        jMenu2 = new javax.swing.JMenu();
+        jMenuItemNomeUsuario = new javax.swing.JMenuItem();
+        jSeparator1 = new javax.swing.JPopupMenu.Separator();
+        jMenuItem7 = new javax.swing.JMenuItem();
 
         jLabel9.setText("jLabel9");
 
         jComboBox1.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+
+        jCheckBoxMenuItem1.setSelected(true);
+        jCheckBoxMenuItem1.setText("jCheckBoxMenuItem1");
+
+        jCheckBoxMenuItem2.setSelected(true);
+        jCheckBoxMenuItem2.setText("jCheckBoxMenuItem2");
+
+        jMenuItem1.setText("jMenuItem1");
+
+        jMenuItem2.setText("jMenuItem2");
+
+        jMenuItem3.setText("jMenuItem3");
+
+        jMenuItem5.setText("jMenuItem5");
+
+        jMenuItem6.setText("jMenuItem6");
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -122,14 +153,14 @@ public class ContasGUI extends javax.swing.JFrame {
 
             },
             new String [] {
-                "Valor", "Pagamento", "Vencimento", "Juros", "Multa", "Novo Valor"
+                "Usuário", "Valor", "Pagamento", "Vencimento", "Juros", "Multa", "Novo Valor"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
+                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
             };
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, false
+                false, false, false, false, false, false, false
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -148,6 +179,7 @@ public class ContasGUI extends javax.swing.JFrame {
             jTable.getColumnModel().getColumn(3).setResizable(false);
             jTable.getColumnModel().getColumn(4).setResizable(false);
             jTable.getColumnModel().getColumn(5).setResizable(false);
+            jTable.getColumnModel().getColumn(6).setResizable(false);
         }
 
         jButton2.setText("EXPORTAR TXT");
@@ -162,22 +194,26 @@ public class ContasGUI extends javax.swing.JFrame {
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
             .addGroup(jPanel2Layout.createSequentialGroup()
-                .addContainerGap()
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane2, javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                        .addComponent(jLabel13)
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jButton2)
                         .addGap(18, 18, 18)
-                        .addComponent(jDateInicio, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(jLabel14)
-                        .addGap(18, 18, 18)
-                        .addComponent(jDateFim, javax.swing.GroupLayout.PREFERRED_SIZE, 179, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(jButton3)
+                        .addGap(39, 39, 39))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                        .addGap(373, 373, 373)
-                        .addComponent(jButton2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jButton3)))
+                        .addContainerGap()
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                                .addGap(0, 143, Short.MAX_VALUE)
+                                .addComponent(jLabel13)
+                                .addGap(18, 18, 18)
+                                .addComponent(jDateInicio, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(jLabel14)
+                                .addGap(18, 18, 18)
+                                .addComponent(jDateFim, javax.swing.GroupLayout.PREFERRED_SIZE, 179, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(jScrollPane2, javax.swing.GroupLayout.Alignment.TRAILING))))
                 .addContainerGap())
         );
         jPanel2Layout.setVerticalGroup(
@@ -189,9 +225,9 @@ public class ContasGUI extends javax.swing.JFrame {
                     .addComponent(jLabel13)
                     .addComponent(jDateFim, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel14))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 242, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 274, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButton3)
                     .addComponent(jButton2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
@@ -217,6 +253,27 @@ public class ContasGUI extends javax.swing.JFrame {
 
         jLabel4.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         jLabel4.setText("Data de Vencimento:*");
+
+        jTData1.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                jTData1FocusLost(evt);
+            }
+        });
+        jTData1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jTData1MouseClicked(evt);
+            }
+        });
+        jTData1.addPropertyChangeListener(new java.beans.PropertyChangeListener() {
+            public void propertyChange(java.beans.PropertyChangeEvent evt) {
+                jTData1PropertyChange(evt);
+            }
+        });
+        jTData1.addVetoableChangeListener(new java.beans.VetoableChangeListener() {
+            public void vetoableChange(java.beans.PropertyChangeEvent evt)throws java.beans.PropertyVetoException {
+                jTData1VetoableChange(evt);
+            }
+        });
 
         jTextArea1.setColumns(20);
         jTextArea1.setRows(5);
@@ -256,50 +313,48 @@ public class ContasGUI extends javax.swing.JFrame {
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 440, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel4)
-                    .addComponent(jLabel3, javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jLabel2, javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addComponent(jCheckBoxMulta)
-                        .addComponent(jCheckBoxJuros))
-                    .addComponent(jLabel5, javax.swing.GroupLayout.Alignment.TRAILING))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jTData1, javax.swing.GroupLayout.DEFAULT_SIZE, 245, Short.MAX_VALUE)
-                    .addComponent(jTValor)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(139, 139, 139)
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(jButton1))
-                    .addComponent(jTFMulta)
-                    .addComponent(jTFJuros)
-                    .addComponent(jTData, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jScrollPane1))
-                .addGap(0, 0, Short.MAX_VALUE))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(130, 130, 130)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel4)
+                            .addComponent(jLabel3, javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jLabel2, javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(jCheckBoxMulta)
+                                .addComponent(jCheckBoxJuros))
+                            .addComponent(jLabel5, javax.swing.GroupLayout.Alignment.TRAILING))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jTData1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jTValor)
+                            .addComponent(jTFMulta)
+                            .addComponent(jTFJuros)
+                            .addComponent(jTData, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                                .addGap(0, 0, Short.MAX_VALUE)
+                                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 288, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                .addGap(82, 82, 82))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel3)
                     .addComponent(jTValor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jTData1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel4))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jTData, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel2))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGap(15, 15, 15)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jCheckBoxJuros)
                     .addComponent(jTFJuros, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -307,13 +362,13 @@ public class ContasGUI extends javax.swing.JFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jCheckBoxMulta)
                     .addComponent(jTFMulta, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel5)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jScrollPane1))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jButton1)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
         );
 
         jTabbedPane2.addTab("CADASTRO", jPanel1);
@@ -335,6 +390,29 @@ public class ContasGUI extends javax.swing.JFrame {
                 .addContainerGap())
         );
         jDesktopPane1.setLayer(jTabbedPane2, javax.swing.JLayeredPane.DEFAULT_LAYER);
+
+        jMenu2.setText("Usuário");
+        jMenu2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenu2ActionPerformed(evt);
+            }
+        });
+
+        jMenuItemNomeUsuario.setText("usu");
+        jMenu2.add(jMenuItemNomeUsuario);
+        jMenu2.add(jSeparator1);
+
+        jMenuItem7.setText("Sair");
+        jMenuItem7.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem7ActionPerformed(evt);
+            }
+        });
+        jMenu2.add(jMenuItem7);
+
+        jMenuBar1.add(jMenu2);
+
+        setJMenuBar(jMenuBar1);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -376,6 +454,11 @@ public class ContasGUI extends javax.swing.JFrame {
                 contas.setBoletoDataVencimento(vencimento);
                 contas.setBoletoDataPagamento(pagamento);
                 contas.setBoletoDescricao(jTextArea1.getText() + " ");
+                contas.setUsuario(usuario);
+
+                contas.setAcrecimoJuros("0");
+                contas.setAcrecimoMulta("0");
+                contas.setAcrecimoNovoValor(Double.toString(d));
 
                 try {//calculo da diferença de dias
 
@@ -409,7 +492,6 @@ public class ContasGUI extends javax.swing.JFrame {
                     if (dataPagamento.compareTo(dataVencimento) > 0 && (jCheckBoxMulta.isSelected()
                             || jCheckBoxJuros.isSelected())) {//teste se boleto atrasado
 
-//                        JOptionPane.showConfirmDialog(null, "O Boleto está " + difDias + " dias Atrasado! ");
                         double valorB = Double.parseDouble(jTValor.getText());
                         valorB = Math.round(valorB * 100) / 100d;
 
@@ -420,7 +502,6 @@ public class ContasGUI extends javax.swing.JFrame {
                         if (jCheckBoxMulta.isSelected()) {
                             multa = valorB * multa;//calculo da multa
                             multa = Math.round(multa * 100) / 100d;
-
                         }
 
                         valorB += multa + juros;//calculo do novo valor 
@@ -447,9 +528,11 @@ public class ContasGUI extends javax.swing.JFrame {
                         jTValor.setText("");
                         jTFMulta.setText("");
                         jTFJuros.setText("");
+                        jTextArea1.setText("");
+                        jTFJuros.setEnabled(false);
+                        jTFMulta.setEnabled(false);
                         jCheckBoxJuros.setSelected(false);
                         jCheckBoxMulta.setSelected(false);
-                        jTextArea1.setText("");
                     }
 //                    JOptionPane.show
 
@@ -497,6 +580,7 @@ public class ContasGUI extends javax.swing.JFrame {
                 data = rs.getString("boleto_data_pagamento");
                 dData = sdf.parse(data);
                 if (dData.compareTo(sdf.parse(dataInicio)) >= 0 && dData.compareTo(sdf.parse(dataFim)) <= 0) {
+                    linhas.add(rs.getString("fk_usuario_usuario"));
                     linhas.add(rs.getString("boleto_valor"));
                     linhas.add(rs.getString("boleto_data_pagamento"));
                     linhas.add(rs.getString("boleto_data_vencimento"));
@@ -514,7 +598,6 @@ public class ContasGUI extends javax.swing.JFrame {
             Logger.getLogger(ContasGUI.class.getName()).log(Level.SEVERE, null, ex);
         }
 
-        
 
     }//GEN-LAST:event_jButton3ActionPerformed
 
@@ -528,10 +611,11 @@ public class ContasGUI extends javax.swing.JFrame {
 
     private void jCheckBoxMultaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBoxMultaActionPerformed
         // TODO add your handling code here:
-        if (!jCheckBoxMulta.isSelected()) {
-            jTFMulta.setEnabled(false);
-        } else {
+        Date data = new Date();
+        if (jCheckBoxMulta.isSelected() && jTData1.getDate().compareTo(data)<=0) {
             jTFMulta.setEnabled(true);
+        } else {
+            jTFMulta.setEnabled(false);
         }
 
     }//GEN-LAST:event_jCheckBoxMultaActionPerformed
@@ -542,10 +626,11 @@ public class ContasGUI extends javax.swing.JFrame {
 
     private void jCheckBoxJurosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBoxJurosActionPerformed
         // TODO add your handling code here
-        if (!jCheckBoxJuros.isSelected()) {
-            jTFJuros.setEnabled(false);
-        } else {
+        Date data = new Date();
+        if (jCheckBoxJuros.isSelected() && jTData1.getDate().compareTo(data)<=0) {
             jTFJuros.setEnabled(true);
+        } else {
+            jTFJuros.setEnabled(false);
         }
 
     }//GEN-LAST:event_jCheckBoxJurosActionPerformed
@@ -561,30 +646,37 @@ public class ContasGUI extends javax.swing.JFrame {
         Date d = new Date();
         SimpleDateFormat df = new SimpleDateFormat("dd-MM-yyyy-hh:mm:ss");
         String dS = df.format(d);
-//        System.out.println(dS);
 
         String path = jfc.getSelectedFile().getPath();
         try {
             Formatter f = new Formatter(path + "/" + dS + ".txt");
-//            f.format("Valor\t+Pagamento\t+Vencimento\t+Juros"
-//                    + "\t+Multa\t+NovoValor\n");
 
-            for (int i = 0; i < 6; i++) {
-                if (i != 5 && i != 0) {
-                    f.format(jTable.getColumnName(i) + "\t+  ");
+            for (int i = 0; i < 7; i++) {
+                if (i != 6 && i != 0) {
+                    f.format(jTable.getColumnName(i) + "\t|  ");
                 } else if (i == 0) {
-                    f.format("+  " + jTable.getColumnName(i) + "\t+  ");
+                    f.format("|  " + jTable.getColumnName(i) + "\t|  ");
                 } else {
                     f.format(jTable.getColumnName(i) + "\t");
-
                 }
-
             }
+
             f.format("\n");
 
-            f.format("|--------------|--------------|"
-                    + "--------------|--------------|"
-                    + "--------------|--------------\n");
+            f.format("+--------------+--------------+"
+                    + "--------------+--------------+"
+                    + "--------------+--------------+--------------\n");
+            for (int i = 0; i < jTable.getRowCount(); i++) {
+                for (int j = 0; j < jTable.getColumnCount(); j++) {
+                    f.format("| " + jTable.getValueAt(i, j) + "\t");
+                }
+                f.format("\n");
+
+                f.format("+--------------+--------------+"
+                        + "--------------+--------------+"
+                        + "--------------+--------------+--------------\n");
+            }
+
             f.close();
 
         } catch (FileNotFoundException ex) {
@@ -593,6 +685,42 @@ public class ContasGUI extends javax.swing.JFrame {
 
 
     }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void jMenu2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenu2ActionPerformed
+        // TODO add your handling code here:
+
+
+    }//GEN-LAST:event_jMenu2ActionPerformed
+
+    private void jMenuItem7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem7ActionPerformed
+        // TODO add your handling code here:
+        this.setVisible(false);
+        Login log = new Login();
+        log.setVisible(true);
+
+    }//GEN-LAST:event_jMenuItem7ActionPerformed
+
+    private void jTData1FocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jTData1FocusLost
+        // TODO add your handling code here:
+
+    }//GEN-LAST:event_jTData1FocusLost
+
+    private void jTData1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTData1MouseClicked
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jTData1MouseClicked
+
+    private void jTData1VetoableChange(java.beans.PropertyChangeEvent evt)throws java.beans.PropertyVetoException {//GEN-FIRST:event_jTData1VetoableChange
+        // TODO add your handling code here:
+
+        JOptionPane.showMessageDialog(null, "teest");
+        System.out.println("ok");
+    }//GEN-LAST:event_jTData1VetoableChange
+
+    private void jTData1PropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_jTData1PropertyChange
+        // TODO add your handling code here:
+
+//         JOptionPane.showMessageDialog(null, "teest");
+    }//GEN-LAST:event_jTData1PropertyChange
     //método para verificar se a data está no padrão dd/mm/yyyy
 
     public boolean dataOK(String data) {
@@ -627,8 +755,6 @@ public class ContasGUI extends javax.swing.JFrame {
     public void setString(String string) {
         this.string = string;
     }
-
-    
 
     /**
      * @param args the command line arguments
@@ -670,6 +796,8 @@ public class ContasGUI extends javax.swing.JFrame {
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
     private javax.swing.JCheckBox jCheckBoxJuros;
+    private javax.swing.JCheckBoxMenuItem jCheckBoxMenuItem1;
+    private javax.swing.JCheckBoxMenuItem jCheckBoxMenuItem2;
     private javax.swing.JCheckBox jCheckBoxMulta;
     private javax.swing.JComboBox jComboBox1;
     private com.toedter.calendar.JDateChooser jDateFim;
@@ -682,11 +810,23 @@ public class ContasGUI extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel9;
+    private javax.swing.JMenu jMenu2;
+    private javax.swing.JMenuBar jMenuBar1;
+    private javax.swing.JMenuItem jMenuItem1;
+    private javax.swing.JMenuItem jMenuItem2;
+    private javax.swing.JMenuItem jMenuItem3;
+    private javax.swing.JMenuItem jMenuItem5;
+    private javax.swing.JMenuItem jMenuItem6;
+    private javax.swing.JMenuItem jMenuItem7;
+    private javax.swing.JMenuItem jMenuItemNomeUsuario;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
+    private javax.swing.JPopupMenu jPopupMenu1;
+    private javax.swing.JPopupMenu jPopupMenu2;
+    private javax.swing.JPopupMenu jPopupMenu3;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JSeparator jSeparator1;
+    private javax.swing.JPopupMenu.Separator jSeparator1;
     private com.toedter.calendar.JDateChooser jTData;
     private com.toedter.calendar.JDateChooser jTData1;
     private javax.swing.JTextField jTFJuros;
