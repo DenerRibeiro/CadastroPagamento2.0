@@ -85,13 +85,13 @@ public class ContasGUI extends javax.swing.JFrame {
         jTabbedPane2 = new javax.swing.JTabbedPane();
         jPanel2 = new javax.swing.JPanel();
         jButton3 = new javax.swing.JButton();
-        jLabel13 = new javax.swing.JLabel();
         jDateInicio = new com.toedter.calendar.JDateChooser();
         jDateFim = new com.toedter.calendar.JDateChooser();
         jLabel14 = new javax.swing.JLabel();
         jScrollPane2 = new javax.swing.JScrollPane();
         jTable = new javax.swing.JTable();
         jButton2 = new javax.swing.JButton();
+        jComboBox2 = new javax.swing.JComboBox();
         jPanel1 = new javax.swing.JPanel();
         jButton1 = new javax.swing.JButton();
         jLabel3 = new javax.swing.JLabel();
@@ -142,9 +142,6 @@ public class ContasGUI extends javax.swing.JFrame {
             }
         });
 
-        jLabel13.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-        jLabel13.setText("Pagamento");
-
         jLabel14.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         jLabel14.setText("até");
 
@@ -189,6 +186,13 @@ public class ContasGUI extends javax.swing.JFrame {
             }
         });
 
+        jComboBox2.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Pagamento", "Vencimento" }));
+        jComboBox2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jComboBox2ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
@@ -205,15 +209,15 @@ public class ContasGUI extends javax.swing.JFrame {
                         .addContainerGap()
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                                .addGap(0, 143, Short.MAX_VALUE)
-                                .addComponent(jLabel13)
+                                .addGap(0, 0, Short.MAX_VALUE)
+                                .addComponent(jComboBox2, javax.swing.GroupLayout.PREFERRED_SIZE, 152, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(18, 18, 18)
                                 .addComponent(jDateInicio, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(18, 18, 18)
                                 .addComponent(jLabel14)
                                 .addGap(18, 18, 18)
                                 .addComponent(jDateFim, javax.swing.GroupLayout.PREFERRED_SIZE, 179, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addComponent(jScrollPane2, javax.swing.GroupLayout.Alignment.TRAILING))))
+                            .addComponent(jScrollPane2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 687, Short.MAX_VALUE))))
                 .addContainerGap())
         );
         jPanel2Layout.setVerticalGroup(
@@ -222,9 +226,9 @@ public class ContasGUI extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(jDateInicio, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel13)
                     .addComponent(jDateFim, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel14))
+                    .addComponent(jLabel14)
+                    .addComponent(jComboBox2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 274, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
@@ -556,6 +560,7 @@ public class ContasGUI extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+        String sel = jComboBox2.getSelectedItem().toString();
         Date inicio = new Date();
         Date fim = new Date();
         inicio = jDateInicio.getDate();
@@ -566,9 +571,7 @@ public class ContasGUI extends javax.swing.JFrame {
 
         ContasDAO cd = new ContasDAO();
         DefaultTableModel model = (DefaultTableModel) jTable.getModel();
-//        model.addRow();
 
-//        model.setNumRows(1);
         model.setNumRows(0);
         String data = null;
         Date dData = null;
@@ -577,7 +580,13 @@ public class ContasGUI extends javax.swing.JFrame {
             ResultSet rs = cd.Consulta();
             while (rs.next()) {
                 Vector linhas = new Vector();
-                data = rs.getString("boleto_data_pagamento");
+                if (sel.equals("Pagamento")) {
+                    data = rs.getString("boleto_data_pagamento");
+                } else {
+                    data = rs.getString("boleto_data_vencimento");
+
+                }
+
                 dData = sdf.parse(data);
                 if (dData.compareTo(sdf.parse(dataInicio)) >= 0 && dData.compareTo(sdf.parse(dataFim)) <= 0) {
                     linhas.add(rs.getString("fk_usuario_usuario"));
@@ -612,7 +621,7 @@ public class ContasGUI extends javax.swing.JFrame {
     private void jCheckBoxMultaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBoxMultaActionPerformed
         // TODO add your handling code here:
         Date data = new Date();
-        if (jCheckBoxMulta.isSelected() && jTData1.getDate().compareTo(data)<=0) {
+        if (jCheckBoxMulta.isSelected() && jTData1.getDate().compareTo(data) <= 0) {
             jTFMulta.setEnabled(true);
         } else {
             jTFMulta.setEnabled(false);
@@ -627,7 +636,7 @@ public class ContasGUI extends javax.swing.JFrame {
     private void jCheckBoxJurosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBoxJurosActionPerformed
         // TODO add your handling code here
         Date data = new Date();
-        if (jCheckBoxJuros.isSelected() && jTData1.getDate().compareTo(data)<=0) {
+        if (jCheckBoxJuros.isSelected() && jTData1.getDate().compareTo(data) <= 0) {
             jTFJuros.setEnabled(true);
         } else {
             jTFJuros.setEnabled(false);
@@ -721,6 +730,10 @@ public class ContasGUI extends javax.swing.JFrame {
 
 //         JOptionPane.showMessageDialog(null, "teest");
     }//GEN-LAST:event_jTData1PropertyChange
+
+    private void jComboBox2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox2ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jComboBox2ActionPerformed
     //método para verificar se a data está no padrão dd/mm/yyyy
 
     public boolean dataOK(String data) {
@@ -800,10 +813,10 @@ public class ContasGUI extends javax.swing.JFrame {
     private javax.swing.JCheckBoxMenuItem jCheckBoxMenuItem2;
     private javax.swing.JCheckBox jCheckBoxMulta;
     private javax.swing.JComboBox jComboBox1;
+    private javax.swing.JComboBox jComboBox2;
     private com.toedter.calendar.JDateChooser jDateFim;
     private com.toedter.calendar.JDateChooser jDateInicio;
     private javax.swing.JDesktopPane jDesktopPane1;
-    private javax.swing.JLabel jLabel13;
     private javax.swing.JLabel jLabel14;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
