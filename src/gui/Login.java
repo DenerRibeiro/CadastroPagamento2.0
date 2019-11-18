@@ -6,12 +6,8 @@
 package gui;
 
 import dao.ContasDAO;
-import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.GridLayout;
-import java.util.Arrays;
-import javax.swing.Action;
-import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -29,7 +25,7 @@ public class Login extends javax.swing.JFrame {
      * Creates new form Login
      */
     public Login() {
-
+        //configurações iniciais
         initComponents();
         setResizable(false);
         setLocationRelativeTo(null);
@@ -166,6 +162,7 @@ public class Login extends javax.swing.JFrame {
 
     private void jBEntrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBEntrarActionPerformed
         // TODO add your handling code here:
+        //chama o evento de login
         ActionHandlerEntrar();
     }//GEN-LAST:event_jBEntrarActionPerformed
 
@@ -174,11 +171,11 @@ public class Login extends javax.swing.JFrame {
         ContasDAO dao = new ContasDAO();
         Contas contas = new Contas();
 
+        //Confiurando o painel de senha do administrador
         JPanel panelAdmin = new JPanel();
         panelAdmin.setLayout(new GridLayout(2, 2));
         JLabel jLsenhaAdmin = new JLabel("             "
                 + "Senha: ");
-        jLsenhaAdmin.setAlignmentX(CENTER_ALIGNMENT);
 
         JLabel jLLoginError = new JLabel("*Senha incorreta!");
         jLLoginError.setForeground(Color.red);
@@ -191,15 +188,20 @@ public class Login extends javax.swing.JFrame {
 
         int resAdmin = 0;
 
+        //enquando a senha não for correta e o usuário não cancelar a acao
         while (resAdmin == 0) {
-
+            //pede senha do adiministrador
             resAdmin = JOptionPane.showConfirmDialog(null, panelAdmin,
                     "Senha do administrador", JOptionPane.OK_CANCEL_OPTION);
+            //se botao cancel é acionado
             if (resAdmin != 0) {
                 break;
-            }
+            }//se botao ok é acionado
+            //verifica a senha do administrador
             if (jPsenhaAdmin.getText().equals("admin")) {
                 resAdmin = 1;
+
+                //prepara o painel do novo usuário
                 JPanel panel = new JPanel();
                 panel.setLayout(new GridLayout(3, 1));
                 JLabel jLusuario = new JLabel("Usuário:");
@@ -219,24 +221,29 @@ public class Login extends javax.swing.JFrame {
                 panel.add(jLError);
 
                 boolean flag = true;
+                //enquanto o usuário digitado já estiver cadastrado e
+                //o usuário não cancelar a ação 
                 while (flag) {
                     int resUsuario = JOptionPane.showConfirmDialog(null, panel,
                             "Cadastrar Usuário", JOptionPane.OK_CANCEL_OPTION);
 
+                    //verifica campo vazio
                     if ((jTusuario.getText().isEmpty() || jPsenha.getText().isEmpty()) && resUsuario == 0) {
                         JOptionPane.showMessageDialog(null, "Os campos não podem estar vazios");
                     } else {
+                        //adiciona usuáiro
                         contas.setUsuario(jTusuario.getText());
                         contas.setSenha(jPsenha.getText());
 
                         if (resUsuario == 0) {
-                            if (dao.VerificaUsuario(jTusuario.getText()) == false && 
-                                    !jTusuario.getText().equals("admin")) {
+                            //verifica se há usuário com esse login e adiciona no banco
+                            if (dao.VerificaUsuario(jTusuario.getText()) == false
+                                    && !jTusuario.getText().equals("admin")) {
                                 dao.AdicionaUsuario(contas);
                                 JOptionPane.showMessageDialog(null, "Usuário cadastrado com sucesso");
                                 flag = false;
                             } else {
-                                
+
                                 jLError.setVisible(true);
                                 panel.invalidate();
 
@@ -265,20 +272,24 @@ public class Login extends javax.swing.JFrame {
 
     private void jPSenhaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jPSenhaActionPerformed
         // TODO add your handling code here:
+        //chama o evento de login
         ActionHandlerEntrar();
     }//GEN-LAST:event_jPSenhaActionPerformed
 
+    //acao de login
     public void ActionHandlerEntrar() {
 
         ContasDAO dao = new ContasDAO();
 
         String senha = new String(jPSenha.getPassword());
         String usuario = jTUsuario.getText();
-
+        
+        //verifica usuario e senha
         if (dao.VerificaUsuarioESenha(usuario, senha)) {
             ContasGUI g = new ContasGUI(this, usuario);
             g.setVisible(true);
-        } else if (senha.equals("admin") && usuario.equals("admin")) {
+        } else //caso o usuario seja o admin
+        if (senha.equals("admin") && usuario.equals("admin")) {
             if (!dao.VerificaUsuarioESenha("admin", "admin")) {
                 Contas contas = new Contas();
                 contas.setUsuario("admin");
@@ -287,8 +298,9 @@ public class Login extends javax.swing.JFrame {
             }
             ContasGUI g = new ContasGUI(this, "admin");
             g.setVisible(true);
-        } else {
-//            JOptionPane.showMessageDialog(null, "Usuário e/ou senha incorretos!");
+        } 
+        //caso usuario e/ou senha incorretos
+        else {
             jLabelLoginError.setVisible(true);
             jLabelLoginError.setText("*Usuário e/ou senha incorretos!");
             jTUsuario.setText("");

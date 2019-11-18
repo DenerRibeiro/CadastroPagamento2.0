@@ -17,29 +17,41 @@ public class ContasDAO {
 
     private Connection connection;
 
+    //estabelce conexao com o banco
     public ContasDAO() {
         this.connection = new ConnectionFactory().getConnection();
     }
 
     //método que adiciona os valores na tabela tb_boleto
-    public void Adiciona(Contas contas) {
+    //e retorna o código do boleto
+    public int Adiciona(Contas contas) {
         String sqlB = "INSERT INTO tb_boleto(boleto_valor,boleto_data_vencimento,"
                 + "boleto_data_pagamento,boleto_descricao,fk_usuario_usuario) VALUES(?,?,?,?,?)";
+        int boleto_cod = -1;
+
         try {
-            PreparedStatement stmt = this.connection.prepareStatement(sqlB);
+            PreparedStatement stmt = this.connection.prepareStatement(sqlB, Statement.RETURN_GENERATED_KEYS);
 
             stmt.setString(1, contas.getBoletoValor());
             stmt.setString(2, contas.getBoletoDataVencimento());
             stmt.setString(3, contas.getBoletoDataPagamento());
             stmt.setString(4, contas.getBoletoDescricao());
             stmt.setString(5, contas.getUsuario());
-            stmt.execute();
+
+            stmt.executeUpdate();
+
+            ResultSet rs = stmt.getGeneratedKeys();
+            if (rs.next()) {
+                boleto_cod = rs.getInt(1);
+            }
+
             stmt.close();
 
         } catch (SQLException u) {
             JOptionPane.showMessageDialog(null, "Erro na conexão com o Banco de Dados!");
             throw new RuntimeException(u);
         }
+        return boleto_cod;
 
     }
 
@@ -53,7 +65,7 @@ public class ContasDAO {
             stmtA.setString(1, contas.getAcrecimoMulta());
             stmtA.setString(2, contas.getAcrecimoJuros());
             stmtA.setString(3, contas.getAcrecimoNovoValor());
-            stmtA.setInt(4, LastQuery());
+            stmtA.setInt(4, contas.getBoletoCod());
             stmtA.execute();
             stmtA.close();
         } catch (SQLException u) {
@@ -61,7 +73,8 @@ public class ContasDAO {
             throw new RuntimeException(u);
         }
     }
-
+    
+    //método que  adiciona usuario na tabela tb_usuario
     public void AdicionaUsuario(Contas contas) {
         String sql = "INSERT INTO tb_usuario(usuario_usuario, usuario_senha)"
                 + "VALUES (?,?)";
@@ -85,7 +98,7 @@ public class ContasDAO {
         ResultSet rs = null;
 
         try {
-//            ResultSet rs;
+            
             Statement stmt;
 
             ConnectionFactory con = new ConnectionFactory();
@@ -107,7 +120,8 @@ public class ContasDAO {
         return rs;
 
     }
-
+    
+    //método que verifica se já existe o usuario digitado
     public boolean VerificaUsuario(String usuario) {
         String sql = "select usuario_usuario from tb_usuario";
         ResultSet rs;
@@ -115,14 +129,14 @@ public class ContasDAO {
             PreparedStatement stmt = this.connection.prepareStatement(sql);
             stmt.execute();
             rs = stmt.executeQuery();
-            
-            while(rs.next()){
-                if(rs.getString("usuario_usuario").equals(usuario)){
-                   return true;
-                }           
-            }           
+
+            while (rs.next()) {
+                if (rs.getString("usuario_usuario").equals(usuario)) {
+                    return true;
+                }
+            }
             stmt.close();
-        
+
         } catch (SQLException ex) {
             Logger.getLogger(ContasDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -130,41 +144,7 @@ public class ContasDAO {
         return false;
     }
 
-    public int LastQuery() throws SQLException {
-        int res = -1;
-        try {
-            ResultSet rs;
-            Statement stmt;
-
-            ConnectionFactory con = new ConnectionFactory();
-            stmt = con.getConnection().createStatement();
-
-            String sql = "select * from tb_boleto";
-            PreparedStatement stmtC = this.connection.prepareStatement(sql);
-
-            stmtC.execute();
-
-            rs = stmtC.executeQuery();
-//            find = rs.first();
-            while (rs.next()) {
-                res = rs.getInt("boleto_cod");
-            }
-            stmt.close();
-
-//            ContasGUI gui = new ContasGUI();
-//            return find;
-            System.out.println(res);
-
-            return res;
-        } catch (SQLException e) {
-//            JOptionPane.showMessageDialog(null, e);
-            e.printStackTrace();
-        }
-        return res;
-//        return find;
-
-    }
-    
+    //método que verifica no banco se existe o usário e senha digitados no login
     public boolean VerificaUsuarioESenha(String usuario, String senha) {
         String sql = "select * from tb_usuario";
         ResultSet rs;
@@ -172,22 +152,20 @@ public class ContasDAO {
             PreparedStatement stmt = this.connection.prepareStatement(sql);
             stmt.execute();
             rs = stmt.executeQuery();
-            
-            while(rs.next()){
-                if(rs.getString("usuario_usuario").equals(usuario) && 
-                        rs.getString("usuario_senha").equals(senha)){
-                   return true;
-                }           
-            }           
+
+            while (rs.next()) {
+                if (rs.getString("usuario_usuario").equals(usuario)
+                        && rs.getString("usuario_senha").equals(senha)) {
+                    return true;
+                }
+            }
             stmt.close();
-        
+
         } catch (SQLException ex) {
             Logger.getLogger(ContasDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
 
         return false;
     }
-    
-    
-    
+
 }

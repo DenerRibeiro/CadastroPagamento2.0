@@ -4,7 +4,6 @@ package gui;
 //import com.itextpdf.kernel.pdf.PdfDocument;
 //import com.itextpdf.text.Document;
 import dao.ContasDAO;
-import java.awt.GridLayout;
 import java.io.*;
 import java.sql.*;
 import java.text.*;
@@ -14,11 +13,7 @@ import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JFileChooser;
-import javax.swing.JLabel;
 import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.JPasswordField;
-import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
 import modelo.Contas;
 
@@ -27,23 +22,10 @@ public class ContasGUI extends javax.swing.JFrame {
     /**
      * Creates new form ContasGUI
      */
-    private JFileChooser jfc;
     private static String usuario;
-
-    public ContasGUI() {
-        initComponents();
-        setResizable(false);
-        setLocationRelativeTo(null);
-        jTData.setDate(new Date(System.currentTimeMillis()));
-        jTData1.setDate(new Date(System.currentTimeMillis()));
-        jDateInicio.setDate(new Date(System.currentTimeMillis()));
-        jDateFim.setDate(new Date(System.currentTimeMillis()));
-        jTFJuros.setEnabled(false);
-        jTFMulta.setEnabled(false);
-
-    }
-
+    
     public ContasGUI(Login l, String usuario) {
+        //configurações iniciais
         initComponents();
         setResizable(false);
         setLocationRelativeTo(null);
@@ -436,10 +418,8 @@ public class ContasGUI extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-
-        String datav = jTData1.getDateFormatString();
-//        System.out.println(datav);
-        if ((jTValor.getText().isEmpty())) { // teste se os campos estão vazios
+        // teste se o campo valor está vazio
+        if ((jTValor.getText().isEmpty())) {
             JOptionPane.showMessageDialog(null, "Os campos * não podem estar vazios!");
         } else {
             SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
@@ -450,16 +430,18 @@ public class ContasGUI extends javax.swing.JFrame {
             ContasDAO dao = new ContasDAO();
             Contas contas = new Contas();
             try {
-//                    double BoletoValorD = Double.parseDouble(jTValor.getText());
-//                    contas.setBoletoCod(Integer.parseInt(jTCodBoleto.getText()));
+
                 double d = Double.parseDouble(jTValor.getText());
                 d = Math.round(d * 100) / 100d;
+
+                //adciona os valores para boleto e acrecimo
                 contas.setBoletoValor(Double.toString(d));
                 contas.setBoletoDataVencimento(vencimento);
                 contas.setBoletoDataPagamento(pagamento);
                 contas.setBoletoDescricao(jTextArea1.getText() + " ");
                 contas.setUsuario(usuario);
 
+                //seta os valores de acrecimo para 0 caso nao haja acrecimo
                 contas.setAcrecimoJuros("0");
                 contas.setAcrecimoMulta("0");
                 contas.setAcrecimoNovoValor(Double.toString(d));
@@ -492,9 +474,9 @@ public class ContasGUI extends javax.swing.JFrame {
                         multa = Math.round(multa * 100) / 100d;
 
                     }
-                    System.out.println(dataPagamento.compareTo(dataVencimento));
+                    //teste se boleto está atrasado
                     if (dataPagamento.compareTo(dataVencimento) > 0 && (jCheckBoxMulta.isSelected()
-                            || jCheckBoxJuros.isSelected())) {//teste se boleto atrasado
+                            || jCheckBoxJuros.isSelected())) {
 
                         double valorB = Double.parseDouble(jTValor.getText());
                         valorB = Math.round(valorB * 100) / 100d;
@@ -511,6 +493,7 @@ public class ContasGUI extends javax.swing.JFrame {
                         valorB += multa + juros;//calculo do novo valor 
                         valorB = Math.round(valorB * 100) / 100d;
 
+                        //adiciona os valores de acrecimo
                         contas.setAcrecimoJuros(Double.toString(juros));
                         contas.setAcrecimoMulta(Double.toString(multa));
                         contas.setAcrecimoNovoValor(Double.toString(valorB));
@@ -523,11 +506,13 @@ public class ContasGUI extends javax.swing.JFrame {
                             "Tem certeza que deseja cadastrar ?", "",
                             JOptionPane.OK_CANCEL_OPTION, JOptionPane.INFORMATION_MESSAGE);
                     if (input == 0) {
-                        dao.Adiciona(contas);
+                        //insere no banco os valores
+                        contas.setBoletoCod(dao.Adiciona(contas));
                         dao.AdicionaAcrecimo(contas);
 
                         JOptionPane.showMessageDialog(this, "Pagamento Cadastrado com Sucesso!");
 
+                        //reseta os campos
                         jTData.setDate(new Date(System.currentTimeMillis()));
                         jTValor.setText("");
                         jTFMulta.setText("");
@@ -538,17 +523,14 @@ public class ContasGUI extends javax.swing.JFrame {
                         jCheckBoxJuros.setSelected(false);
                         jCheckBoxMulta.setSelected(false);
                     }
-//                    JOptionPane.show
 
-                } catch (ParseException ex) {
-//                    JOptionPane.showMessageDialog(this, "Juros e Multa devem ser números");
-                    Logger.getLogger(ContasGUI.class.getName()).log(Level.SEVERE, null, ex);
                 } catch (NumberFormatException ex) {
                     JOptionPane.showMessageDialog(this, "Juros e Multa devem ser números");
                     jTFMulta.setText("");
                     jTFJuros.setText("");
 
-//                    Logger.getLogger(ContasGUI.class.getName()).log(Level.SEVERE, null, ex);
+                } catch (ParseException ex) {
+                    Logger.getLogger(ContasGUI.class.getName()).log(Level.SEVERE, null, ex);
                 }
 
             } catch (NumberFormatException u) {
@@ -560,6 +542,7 @@ public class ContasGUI extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+        //pega o interva das datas para consulta
         String sel = jComboBox2.getSelectedItem().toString();
         Date inicio = new Date();
         Date fim = new Date();
@@ -578,15 +561,17 @@ public class ContasGUI extends javax.swing.JFrame {
 
         try {
             ResultSet rs = cd.Consulta();
+
+            //percorre o banco e preenche a tabela de consulta
             while (rs.next()) {
                 Vector linhas = new Vector();
+                //verifica o método de consulta
                 if (sel.equals("Pagamento")) {
                     data = rs.getString("boleto_data_pagamento");
                 } else {
                     data = rs.getString("boleto_data_vencimento");
 
                 }
-
                 dData = sdf.parse(data);
                 if (dData.compareTo(sdf.parse(dataInicio)) >= 0 && dData.compareTo(sdf.parse(dataFim)) <= 0) {
                     linhas.add(rs.getString("fk_usuario_usuario"));
@@ -612,6 +597,7 @@ public class ContasGUI extends javax.swing.JFrame {
 
     private void jTextArea1KeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextArea1KeyTyped
         // TODO add your handling code here:
+        //limita o tamanho da área de descricao para 500 caracteres
         String text = jTextArea1.getText();
         if (text.length() > 499) {
             JOptionPane.showMessageDialog(null, "Tamanho máximo: 500 caracteres");
@@ -620,6 +606,7 @@ public class ContasGUI extends javax.swing.JFrame {
 
     private void jCheckBoxMultaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBoxMultaActionPerformed
         // TODO add your handling code here:
+        //verifica se a data de vencimento esta acima da atual 
         Date data = new Date();
         if (jCheckBoxMulta.isSelected() && jTData1.getDate().compareTo(data) <= 0) {
             jTFMulta.setEnabled(true);
@@ -635,6 +622,8 @@ public class ContasGUI extends javax.swing.JFrame {
 
     private void jCheckBoxJurosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBoxJurosActionPerformed
         // TODO add your handling code here
+        //verifica se a data de vencimento esta acima da atual 
+
         Date data = new Date();
         if (jCheckBoxJuros.isSelected() && jTData1.getDate().compareTo(data) <= 0) {
             jTFJuros.setEnabled(true);
@@ -646,16 +635,16 @@ public class ContasGUI extends javax.swing.JFrame {
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         // TODO add your handling code here:
+        JFileChooser jfc;
         jfc = new JFileChooser();
         jfc.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
-//        jfc.setCurrentDirectory(new java.io.File("."));
-
         jfc.setAcceptAllFileFilterUsed(false);
         jfc.showOpenDialog(this);
         Date d = new Date();
         SimpleDateFormat df = new SimpleDateFormat("dd-MM-yyyy-hh:mm:ss");
         String dS = df.format(d);
-
+        
+        //pega o caminho selecionado pelo usuário 
         String path = jfc.getSelectedFile().getPath();
         try {
             Formatter f = new Formatter(path + "/" + dS + ".txt");
@@ -703,6 +692,7 @@ public class ContasGUI extends javax.swing.JFrame {
 
     private void jMenuItem7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem7ActionPerformed
         // TODO add your handling code here:
+        //desabilita a tela de consulta/cadastro e habilita a tela de login
         this.setVisible(false);
         Login log = new Login();
         log.setVisible(true);
@@ -721,8 +711,6 @@ public class ContasGUI extends javax.swing.JFrame {
     private void jTData1VetoableChange(java.beans.PropertyChangeEvent evt)throws java.beans.PropertyVetoException {//GEN-FIRST:event_jTData1VetoableChange
         // TODO add your handling code here:
 
-        JOptionPane.showMessageDialog(null, "teest");
-        System.out.println("ok");
     }//GEN-LAST:event_jTData1VetoableChange
 
     private void jTData1PropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_jTData1PropertyChange
@@ -734,41 +722,8 @@ public class ContasGUI extends javax.swing.JFrame {
     private void jComboBox2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox2ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jComboBox2ActionPerformed
-    //método para verificar se a data está no padrão dd/mm/yyyy
 
-    public boolean dataOK(String data) {
-
-        SimpleDateFormat f = new SimpleDateFormat("dd/MM/yyyy");
-        try {
-            f.parse(data);
-        } catch (ParseException e) {
-            return false;
-
-        }
-        return true;
-
-    }
-
-    public String string;
-
-    /**
-     * Get the value of string
-     *
-     * @return the value of string
-     */
-    public String getString() {
-        return string;
-    }
-
-    /**
-     * Set the value of string
-     *
-     * @param string new value of string
-     */
-    public void setString(String string) {
-        this.string = string;
-    }
-
+   
     /**
      * @param args the command line arguments
      */
@@ -799,7 +754,7 @@ public class ContasGUI extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new ContasGUI().setVisible(true);
+//                new ContasGUI().setVisible(true);
             }
         });
     }
