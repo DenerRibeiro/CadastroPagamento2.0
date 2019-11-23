@@ -86,7 +86,7 @@
           <SubComponents>
             <MenuItem class="javax.swing.JMenuItem" name="jMenuItemNomeUsuario">
               <Properties>
-                <Property name="text" type="java.lang.String" value="usu"/>
+                <Property name="text" type="java.lang.String" value="admin"/>
               </Properties>
             </MenuItem>
             <MenuItem class="javax.swing.JPopupMenu$Separator" name="jSeparator1">

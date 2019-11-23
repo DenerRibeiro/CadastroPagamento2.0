@@ -384,7 +384,7 @@ public class ContasGUI extends javax.swing.JFrame {
             }
         });
 
-        jMenuItemNomeUsuario.setText("usu");
+        jMenuItemNomeUsuario.setText("admin");
         jMenu2.add(jMenuItemNomeUsuario);
         jMenu2.add(jSeparator1);
 

@@ -23,3 +23,6 @@ create table tb_acrecimo(
     fk_boleto_cod int,	
     foreign key (fk_boleto_cod) references tb_boleto(boleto_cod)
 );
+drop database cadastro_pagamento;
+use cadastro_pagamento;
+SELECT * FROM tb_boleto,tb_acrecimo where boleto_cod=fk_boleto_cod;

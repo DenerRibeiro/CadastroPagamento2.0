@@ -290,12 +290,12 @@ public class Login extends javax.swing.JFrame {
             g.setVisible(true);
         } else //caso o usuario seja o admin
         if (senha.equals("admin") && usuario.equals("admin")) {
-            if (!dao.VerificaUsuarioESenha("admin", "admin")) {
-                Contas contas = new Contas();
-                contas.setUsuario("admin");
-                contas.setSenha("admin");
-                dao.AdicionaUsuario(contas);
-            }
+//            if (!dao.VerificaUsuarioESenha("admin", "admin")) {
+//                Contas contas = new Contas();
+//                contas.setUsuario("admin");
+//                contas.setSenha("admin");
+//                dao.AdicionaUsuario(contas);
+//            }
             ContasGUI g = new ContasGUI(this, "admin");
             g.setVisible(true);
         } 
