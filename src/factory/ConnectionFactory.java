@@ -6,8 +6,8 @@ public class ConnectionFactory {
     //faz a conexão com o banco de dados
     public Connection getConnection(){
         String url = "jdbc:mysql://localhost/cadastro_pagamento";
-        String uid = "user";
-        String pass = "123";
+        String uid = "root";
+        String pass = "password";
         
         try{
             return DriverManager.getConnection(url, uid, pass);
