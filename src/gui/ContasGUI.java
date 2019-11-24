@@ -554,7 +554,7 @@ public class ContasGUI extends javax.swing.JFrame {
 
         ContasDAO cd = new ContasDAO();
         DefaultTableModel model = (DefaultTableModel) jTable.getModel();
-
+        
         model.setNumRows(0);
         String data = null;
         Date dData = null;
